@@ -1,3 +1,5 @@
-module-info.class
 cs250/App.class
+module-info.class
+cs250/MenuManager.class
+cs250/ViewManager.class
 cs250/ImageFileManager.class

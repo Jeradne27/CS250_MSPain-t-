@@ -9,22 +9,32 @@ public class MenuManager {
 
     @SuppressWarnings("unused")
     private ImageFileManager fileManager;
+    @SuppressWarnings("unused")
+    private ViewManager viewManager;
+
     
-    public MenuManager(ImageFileManager fileManager) {
+    public MenuManager(ImageFileManager fileManager, ViewManager viewManager) { // sets up the menu items and connects them to action
         this.fileManager = fileManager;
+        this.viewManager = viewManager;
 
         menuBar = new MenuBar();
 
         Menu fileMenu = new Menu("File");
+        Menu zoomMenu = new Menu("Zoom");
 
         MenuItem openItem = new MenuItem("Open");
         MenuItem saveItem = new MenuItem("Save");
         MenuItem saveAsItem = new MenuItem("Save As");
         MenuItem closeItem = new MenuItem("Close");
+        MenuItem zoomInItem = new MenuItem("Zoom In");
+        MenuItem zoomOutItem = new MenuItem("Zoom Out");
+        MenuItem resetZoomItem = new MenuItem("Reset Zoom");
 
-        menuBar.getMenus().add(fileMenu);
+        menuBar.getMenus().addAll(fileMenu, zoomMenu);
 
         fileMenu.getItems().addAll(openItem, saveItem, saveAsItem, closeItem);
+    
+        zoomMenu.getItems().addAll(zoomInItem, zoomOutItem, resetZoomItem);
 
         openItem.setOnAction(event -> fileManager.openImage());
         
@@ -32,6 +42,10 @@ public class MenuManager {
         saveAsItem.setOnAction(event-> fileManager.saveImageAs());
     
         closeItem.setOnAction(event -> fileManager.close());
+
+        zoomInItem.setOnAction(event -> viewManager.zoomIn());
+        zoomOutItem.setOnAction(event -> viewManager.zoomOut());
+        resetZoomItem.setOnAction(event -> viewManager.resetZoom());
     }
 
     @SuppressWarnings("exports")
