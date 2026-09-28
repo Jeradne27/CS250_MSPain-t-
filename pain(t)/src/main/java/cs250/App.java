@@ -4,51 +4,107 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 
-// sets the stage for Pain(t)
-// creates canvas and starts application
-public class App extends Application {
 
+// The App.java file is responsible for creating the main window
+// Pain(t) and for connecting the different manager classes. App
+// doesn't handle much funcionality. Open MenuManager.java for menu
+// item funcionality.
+
+public class App extends Application {
+    // main layout and scene of the application window
     BorderPane pane = new BorderPane();      
     Scene scene = new Scene(pane);
+
+    // ImageView displays the opened file, while canvas sits on
+    // top of imageView to allow the user to draw on the image.
+    // ImageView stays unchanged when the user draws on the canvas.
     ImageView imageView = new ImageView();
     Canvas canvas = new Canvas();
-    GraphicsContext gc = canvas.getGraphicsContext2D();
 
+    // drawingArea layers the image and canvas.
+    // workSpace keeps the drawingArea centered.
+    StackPane workSpace = new StackPane();
     StackPane drawingArea = new StackPane();
 
-
-    private ImageFileManager fileManager;
-    private MenuManager menuManager; //calls in the MenuManager.java file
-    private ViewManager viewManager;
-    private DrawingManager drawingManager;
+    // To divide the program into smaller pieces, each manager
+    // handles a different responsiblity.
+    private ImageFileManager fileManager; // opening, saving, closing images
+    private MenuManager menuManager;      // menu bars, menus, and menu items
+                                          //    with connected actions
+    private ViewManager viewManager;      // viewing options and zoom controls
+    private DrawingManager drawingManager;// drawings operations on the canvas
+    private ToolManager toolManager;      // holds drawing tools and settings,
+                                          //    includes width and color 
+    private HelpScreen helpScreen;        // displays help and about windows
 
     @Override
     public void start(@SuppressWarnings("exports") Stage primaryStage) {
         
+        // constructors for the app managers and access to JavaFX components or
+        // other managers if necessary
         fileManager = new ImageFileManager(primaryStage, imageView, canvas, drawingArea);
-        viewManager = new ViewManager(imageView);
-        menuManager = new MenuManager(fileManager, viewManager);
         drawingManager = new DrawingManager(canvas);
-        drawingManager.drawShapes();
+
+        // allows mouse events for the canvas, used by line tool in ToolManager
+        drawingManager.drawLine();
+
+        toolManager = new ToolManager(drawingManager);
+        viewManager = new ViewManager(drawingArea);
+        helpScreen = new HelpScreen();
+
+        // menuManager receives the other managers to allow events from the menubar
+        // to trigger funcionality
+        menuManager = new MenuManager(fileManager, viewManager, toolManager, helpScreen);
         
+        // layering of the canvas over the imageview
+        drawingArea.getChildren().addAll(imageView, canvas);
+
+        // prevents the drawing area from expanding to fill the window
+        drawingArea.setMaxSize(StackPane.USE_PREF_SIZE, StackPane.USE_PREF_SIZE);
+
+        // centering the drawing area inside the workspace
+        workSpace.getChildren().add(drawingArea);
+        workSpace.setAlignment(Pos.CENTER);
+
+        // CSS class is used to style the workspace and other features of Pain(t),
+        // inside style.css file
+        workSpace.getStyleClass().add("workspace");
+
+        pane.setCenter(workSpace);
+
+        // two containers are used at the top and right of pain(t),
+        // the top container holds the menubar with file control, zoom controls, 
+        // and help controls, the right container holds the drawing tools, currently
+        // includes line menu with width and color
+        VBox top = new VBox();
+        VBox right = new VBox();
+
+        top.getChildren().add(menuManager.getMenuBar());
+        right.getChildren().add(menuManager.getToolBar());
+        
+        pane.setTop(top);
+        pane.setRight(right);
+
+        // primary stage and title
         primaryStage.setScene(scene);
         primaryStage.setTitle("MS Paint");
-        primaryStage.setWidth(800); // starting window is bigger to accomodate most files
-        primaryStage.setHeight(600); 
 
-        drawingArea.setAlignment(Pos.CENTER);
-        drawingArea.getChildren().addAll(imageView, canvas);// keeping this initial window size and resizing for larger files
+        // default window size, when resized, workspace remains centererd, the window is large
+        // to allow for larger files before resizing
+        primaryStage.setWidth(800);
+        primaryStage.setHeight(600);
+        
+        // applies styling from style.css file
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
-        pane.setCenter(drawingArea);
-        
-        pane.setTop(menuManager.getMenuBar());
-        
+        // comsuming the close resquest event stops the app from closing immediately, sends
+        // program to the close filemanager for smart save options
         primaryStage.setOnCloseRequest(event -> {
             event.consume();
             fileManager.close(); 
