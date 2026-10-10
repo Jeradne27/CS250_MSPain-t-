@@ -14,6 +14,9 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Manages file operations for image handling in the application.
+ */
 public class ImageFileManager {
     
     // imagefilemanager is responsible for opening images, saving images, and
@@ -39,6 +42,13 @@ public class ImageFileManager {
     // taking a snapshot of the stackpane combines both layers
     private StackPane drawingArea;
 
+    /**
+     * Initializes the ImageFileManager with the specified components.
+     * @param primaryStage The primary stage for the application.
+     * @param imageView The ImageView for displaying images.
+     * @param canvas The Canvas for drawing operations.
+     * @param drawingArea The StackPane containing the image and canvas.
+     */
     @SuppressWarnings("exports")
     // receives references to components needed to perform file operations
     // from App.java
@@ -48,6 +58,9 @@ public class ImageFileManager {
         this.canvas = canvas;
         this.drawingArea = drawingArea;
     }
+    /**
+     * Opens an image file.
+     */
     public void openImage() {
         
         // opens an existing png, jpg/jpeg, or bmp image
@@ -104,6 +117,9 @@ public class ImageFileManager {
         }
     }
 
+    /**
+     * Saves the current image to the current file.
+     */
     public void saveImage() { 
 
         // save the current image to currentfile
@@ -138,7 +154,9 @@ public class ImageFileManager {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Saves the current image with a new file name and format.
+     */
     public void saveImageAs() {
 
         // SaveImageAs allows the user to save the current image a new file name and format
@@ -186,6 +204,9 @@ public class ImageFileManager {
         }
     }
 
+    /**
+     * Closes the application.
+     */
     public void close() {
  
         // close safely closes the main application window

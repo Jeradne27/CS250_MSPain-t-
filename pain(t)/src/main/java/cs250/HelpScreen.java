@@ -4,10 +4,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Manages the help and about screens for the application.
+ */
 // creates separate windows for the help menu item and the about menu item
 // without interupting the primary window
-
 public class HelpScreen {
+    /**
+     * Displays the help screen.
+     */
     public void help() {
 
         // opens the help window
@@ -21,7 +26,9 @@ public class HelpScreen {
         helpWindow.setScene(helpScene);
         helpWindow.show();
     }
-
+    /**
+     * Displays the about screen.
+     */
     public void about() {
         
         // opens the about window

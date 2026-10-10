@@ -9,6 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Slider;
 
+/**
+ * Manages the view options for pain(t).
+ */
 public class ViewManager{
     // manages the zoom functionality for pain(t)
     // viewmanager controls the visual scaling of the drawingarea,
@@ -25,6 +28,10 @@ public class ViewManager{
     // the process
     private StackPane drawingArea;
 
+    /**
+     * Initializes the ViewManager with the specified drawing area.
+     * @param drawingArea The StackPane containing the drawing area.
+     */
     // receives the drawingarea from app.java, this reference is used
     // to modify the scale of the displayed file without directly 
     // changing the image or drawing contents
@@ -33,6 +40,10 @@ public class ViewManager{
         this.drawingArea = drawingArea;
     }
 
+    /**
+     * Sets the zoom level for the drawing area.
+     * @param zoomLvl The zoom level to set.
+     */
     // apples the selected zoom level to the drawing area, scalex 
     // controls the x axis scaling, while scaley controls the y axis
     // scaling, assigning them the same value keeps the image from 
@@ -43,6 +54,9 @@ public class ViewManager{
         drawingArea.setScaleY(zoomLvl);
     }
 
+    /**
+     * Resets the zoom level for the drawing area.
+     */
     // restores the drawingarea to its original size, zoomlvl 1.0
     // equals 100% scaling, this method is called when the reset zoom
     // item is selected
@@ -53,6 +67,9 @@ public class ViewManager{
         drawingArea.setScaleY(zoomLvl);
     }
 
+    /**
+     * Opens the zoom window.
+     */
     // opens the separate window containing the zoom slider
     public void zoom() {
 

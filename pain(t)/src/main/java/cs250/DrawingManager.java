@@ -4,6 +4,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+/**
+ * Manages drawing operations on the application's canvas.
+ */
 // handles drawing performed on the apps canvas,
 // drawingmanager stores the current drawing settings,
 // like width and color, and uses mouse events to
@@ -30,13 +33,20 @@ public class DrawingManager {
     private double lineWidth = 5.0;
     private Color lineColor = Color.BLACK;
 
-    
+    /**
+     * Initializes the DrawingManager with the specified canvas.
+     * @param canvas The canvas on which to perform drawing operations.
+     */
     @SuppressWarnings("exports")
     public DrawingManager(Canvas canvas) {
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the line width for future drawing operations.
+     * @param lineWidth The width of the line to draw.
+     */
     // updates the width for future lines, this method is called
     // on by the toolManager when the user changes the width using
     // the widthitem
@@ -44,6 +54,10 @@ public class DrawingManager {
         this.lineWidth = lineWidth;
     }
 
+    /**
+     * Sets the line color for future drawing operations.
+     * @param lineColor The color of the line to draw.
+     */
     // updates the color that will be used for future lines,
     // this method is called by toolmanager when the user selects
     // a different color from the coloritem
@@ -51,6 +65,9 @@ public class DrawingManager {
         this.lineColor = lineColor;
     }
 
+    /**
+     * Draws a line on the canvas from the starting point to the ending point.
+     */
     // sets the mouse events used for drawing a line, a line starts
     // at x when the mouse is pressed, then ends at y when the mouse is
     // released

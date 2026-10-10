@@ -10,7 +10,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
 
-
+/**
+ * Manages the drawing tools for pain(t).
+ */
 public class ToolManager {
 
     // manages the drawing tools for pain(t),
@@ -29,12 +31,19 @@ public class ToolManager {
     // operations on the canvas
     private DrawingManager drawingManager;
 
+    /**
+     * Initializes the ToolManager with the specified drawing manager.
+     * @param drawingManager The DrawingManager for handling drawing operations.
+     */
     // ensures that the changes are applied to the tool settings that are
     // currently being used on the main app
     public ToolManager(DrawingManager drawingManager) {
         this.drawingManager = drawingManager;    
     }
 
+    /**
+     * Changes the width of the drawing tools.
+     */
     public void changeWidth() {
 
         // opens a separate window with a slider to change the width of
@@ -78,6 +87,9 @@ public class ToolManager {
         widthWindow.show();
     }
 
+    /**
+     * Changes the color of the drawing tools.
+     */
     public void changeColor() {
 
         // opens a new window containing a color selection menu,

@@ -10,12 +10,14 @@ import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 
-
 // The App.java file is responsible for creating the main window
 // Pain(t) and for connecting the different manager classes. App
-// doesn't handle much funcionality. Open MenuManager.java for menu
+// doesn't handle much functionality. Open MenuManager.java for menu
 // item funcionality.
 
+/**
+ * The main application class for Pain(t).
+ */
 public class App extends Application {
     // main layout and scene of the application window
     BorderPane pane = new BorderPane();      
@@ -43,6 +45,10 @@ public class App extends Application {
                                           //    includes width and color 
     private HelpScreen helpScreen;        // displays help and about windows
 
+    /**
+     * Starts the application.
+     * @param primaryStage The primary stage for the application.
+     */
     @Override
     public void start(@SuppressWarnings("exports") Stage primaryStage) {
         
@@ -113,6 +119,10 @@ public class App extends Application {
         primaryStage.show();
     }
     
+    /**
+     * The main method for the application.
+     * @param args The command-line arguments.
+     */
     public static void main(String[] args) {
         launch(args);
     }

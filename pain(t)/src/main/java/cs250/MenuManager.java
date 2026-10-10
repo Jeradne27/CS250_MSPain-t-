@@ -4,6 +4,9 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
+/**
+ * Manages the menus used throughout the application.
+ */
 // menumanager creates and manages the menus used throughout Pain(t),
 // menumanager is responsible for organizing the apps menu options and 
 // connecting the options with the corresponding methods throughout pain(t),
@@ -24,6 +27,14 @@ public class MenuManager {
     // this class
     // **SuppressWarnings were added because vscode didn't like it when
     //   they weren't there**
+
+    /**
+     * Initializes the MenuManager with the specified managers.
+     * @param fileManager The ImageFileManager for handling image file operations.
+     * @param viewManager The ViewManager for handling view operations.
+     * @param toolManager The ToolManager for handling tool operations.
+     * @param helpScreen The HelpScreen for displaying help information.
+     */
     @SuppressWarnings("unused")
     private ImageFileManager fileManager;
     @SuppressWarnings("unused")
@@ -104,6 +115,10 @@ public class MenuManager {
         aboutItem.setOnAction(event -> helpScreen.about());
     }
 
+    /**
+     * Returns the menu bar for the application.
+     * @return The menu bar.
+     */
     // getters used the app file, returns menubar and toolbar in order to place them at the 
     // top and right of the apps borderpane
     @SuppressWarnings("exports")
@@ -111,6 +126,10 @@ public class MenuManager {
         return menuBar;
     }
 
+    /**
+     * Returns the tool bar for the application.
+     * @return The tool bar.
+     */
     @SuppressWarnings("exports")
     public MenuBar getToolBar() {
         return toolBar;
