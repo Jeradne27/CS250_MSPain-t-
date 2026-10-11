@@ -1,4 +1,4 @@
-package cs250;
+package paint;
 
 import java.io.File;
 import java.awt.image.BufferedImage;

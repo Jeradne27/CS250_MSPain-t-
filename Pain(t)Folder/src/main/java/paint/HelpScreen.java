@@ -1,4 +1,4 @@
-package cs250;
+package paint;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;

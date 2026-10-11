@@ -1,4 +1,4 @@
-package cs250;
+package paint;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -38,18 +38,18 @@ public class MenuManager {
     @SuppressWarnings("unused")
     private ImageFileManager fileManager;
     @SuppressWarnings("unused")
-    private ViewManager viewManager;
+    private Zoom zoom;
     @SuppressWarnings("unused")
     private ToolManager toolManager;
     @SuppressWarnings("unused")
     private HelpScreen helpScreen;
 
-    public MenuManager(ImageFileManager fileManager, ViewManager viewManager, ToolManager toolManager, HelpScreen helpScreen) {
+    public MenuManager(ImageFileManager fileManager, Zoom zoom, ToolManager toolManager, HelpScreen helpScreen) {
 
         // initializes the apps menus and connects their actions to the appropriate
         // methods in other classes
         this.fileManager = fileManager;
-        this.viewManager = viewManager;
+        this.zoom = zoom;
         this.toolManager = toolManager;
         this.helpScreen = helpScreen;
 
@@ -102,8 +102,8 @@ public class MenuManager {
         closeItem.setOnAction(event -> fileManager.close());
 
         // connects the zoom menu selections to the viewmanager methods
-        zoomItem.setOnAction(event -> viewManager.zoom());
-        resetZoomItem.setOnAction(event -> viewManager.resetZoom());
+        zoomItem.setOnAction(event -> zoom.zoom());
+        resetZoomItem.setOnAction(event -> zoom.resetZoom());
 
         // connects the drawing tool menu selections to the toolmanager methods
         widthItem.setOnAction(event -> toolManager.changeWidth());

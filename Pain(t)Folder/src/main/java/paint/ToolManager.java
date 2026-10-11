@@ -1,4 +1,4 @@
-package cs250;
+package paint;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -29,7 +29,7 @@ public class ToolManager {
 
     // references the drawingmanager, which is responsible for drawing 
     // operations on the canvas
-    private DrawingManager drawingManager;
+    private Lines lines;
 
     /**
      * Initializes the ToolManager with the specified drawing manager.
@@ -37,8 +37,8 @@ public class ToolManager {
      */
     // ensures that the changes are applied to the tool settings that are
     // currently being used on the main app
-    public ToolManager(DrawingManager drawingManager) {
-        this.drawingManager = drawingManager;    
+    public ToolManager(Lines lines) {
+        this.lines = lines;    
     }
 
     /**
@@ -69,7 +69,7 @@ public class ToolManager {
         // receives the complete decimal value for precise line widths
         widthRange.valueProperty().addListener((observable, oldValue, newValue) -> {
             widthLabel.setText("Width (px): " + newValue.intValue());
-            drawingManager.setLineWidth(newValue.doubleValue());
+            lines.setLineWidth(newValue.doubleValue());
         });
 
         // arrange the slider and the label correctly in the window
@@ -104,7 +104,7 @@ public class ToolManager {
         // is sent to the drawingmanager to update the line's color,
         // this color will only be applied to new lines, not lines
         // already on the canvas
-        colorPicker.setOnAction(event -> {drawingManager.setLineColor(colorPicker.getValue());});
+        colorPicker.setOnAction(event -> {lines.setLineColor(colorPicker.getValue());});
 
         // arranges the color picker correctly in the window
         VBox root = new VBox(15, colorPicker);

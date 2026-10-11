@@ -1,4 +1,4 @@
-package cs250;
+package paint;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,7 +12,7 @@ import javafx.scene.control.Slider;
 /**
  * Manages the view options for pain(t).
  */
-public class ViewManager{
+public class Zoom{
     // manages the zoom functionality for pain(t)
     // viewmanager controls the visual scaling of the drawingarea,
     // allowing users to zoom in and out without changing the
@@ -36,7 +36,7 @@ public class ViewManager{
     // to modify the scale of the displayed file without directly 
     // changing the image or drawing contents
     @SuppressWarnings("exports")
-    public ViewManager(StackPane drawingArea) {
+    public Zoom(StackPane drawingArea) {
         this.drawingArea = drawingArea;
     }
 

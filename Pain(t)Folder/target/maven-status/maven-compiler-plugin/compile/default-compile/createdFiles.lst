@@ -1,5 +1,8 @@
-cs250/App.class
+paint\HelpScreen.class
+paint\Lines.class
+paint\MenuManager.class
+paint\ToolManager.class
 module-info.class
-cs250/MenuManager.class
-cs250/ViewManager.class
-cs250/ImageFileManager.class
+paint\ImageFileManager.class
+paint\ViewManager.class
+paint\App.class

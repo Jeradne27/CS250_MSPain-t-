@@ -1,11 +1,11 @@
-package cs250;
+package paint;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderPane; 
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
@@ -40,7 +40,7 @@ public class App extends Application {
     private MenuManager menuManager;      // menu bars, menus, and menu items
                                           //    with connected actions
     private ViewManager viewManager;      // viewing options and zoom controls
-    private DrawingManager drawingManager;// drawings operations on the canvas
+    private Lines lines;// drawings operations on the canvas
     private ToolManager toolManager;      // holds drawing tools and settings,
                                           //    includes width and color 
     private HelpScreen helpScreen;        // displays help and about windows
@@ -55,12 +55,12 @@ public class App extends Application {
         // constructors for the app managers and access to JavaFX components or
         // other managers if necessary
         fileManager = new ImageFileManager(primaryStage, imageView, canvas, drawingArea);
-        drawingManager = new DrawingManager(canvas);
+        lines = new Lines(canvas);
 
         // allows mouse events for the canvas, used by line tool in ToolManager
-        drawingManager.drawLine();
+        lines.drawLine();
 
-        toolManager = new ToolManager(drawingManager);
+        toolManager = new ToolManager(lines);
         viewManager = new ViewManager(drawingArea);
         helpScreen = new HelpScreen();
 

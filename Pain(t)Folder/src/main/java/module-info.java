@@ -1,9 +1,9 @@
-module cs250 {
+module paint {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.swing;
     requires javafx.graphics;
 
-    opens cs250 to javafx.fxml;
-    exports cs250;
+    opens paint to javafx.fxml;
+    exports paint;
 }

@@ -52,7 +52,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>cs250.App</mainClass>
+                    <mainClass>paint.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>
