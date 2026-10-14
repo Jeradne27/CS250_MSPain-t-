@@ -43,7 +43,8 @@ public class App extends Application {
     private Lines lines;// drawings operations on the canvas
     private ToolManager toolManager;      // holds drawing tools and settings,
                                           //    includes width and color 
-    private HelpScreen helpScreen;        // displays help and about windows
+    private Help helpScreen;        // displays help and about windows
+    private About aboutScreen;      // displays about window
 
     /**
      * Starts the application.
@@ -62,11 +63,11 @@ public class App extends Application {
 
         toolManager = new ToolManager(lines);
         viewManager = new ViewManager(drawingArea);
-        helpScreen = new HelpScreen();
+        helpScreen = new Help();
 
         // menuManager receives the other managers to allow events from the menubar
         // to trigger funcionality
-        menuManager = new MenuManager(fileManager, viewManager, toolManager, helpScreen);
+        menuManager = new MenuManager(fileManager, viewManager, toolManager, helpScreen, aboutScreen);
         
         // layering of the canvas over the imageview
         drawingArea.getChildren().addAll(imageView, canvas);

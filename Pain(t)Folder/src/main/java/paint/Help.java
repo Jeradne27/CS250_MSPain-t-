@@ -9,7 +9,7 @@ import javafx.stage.Stage;
  */
 // creates separate windows for the help menu item and the about menu item
 // without interupting the primary window
-public class HelpScreen {
+public class Help {
     /**
      * Displays the help screen.
      */
@@ -25,21 +25,5 @@ public class HelpScreen {
         helpWindow.setTitle("Pain(t) Help");
         helpWindow.setScene(helpScene);
         helpWindow.show();
-    }
-    /**
-     * Displays the about screen.
-     */
-    public void about() {
-        
-        // opens the about window
-        // will include information about pain(t) (purpose, version, etc,)
-        // can be included inside the aboutLayout VBox
-        Stage aboutWindow = new Stage();
-        VBox aboutLayout = new VBox();
-        Scene aboutScene = new Scene(aboutLayout, 400, 300);
-
-        aboutWindow.setTitle("About Pain(t)");
-        aboutWindow.setScene(aboutScene);
-        aboutWindow.show();
     }
 }

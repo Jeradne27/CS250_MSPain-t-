@@ -1,8 +1,2 @@
-paint\HelpScreen.class
-paint\Lines.class
-paint\MenuManager.class
-paint\ToolManager.class
 module-info.class
-paint\ImageFileManager.class
-paint\ViewManager.class
-paint\App.class
+paint/About.class

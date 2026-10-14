@@ -42,9 +42,10 @@ public class MenuManager {
     @SuppressWarnings("unused")
     private ToolManager toolManager;
     @SuppressWarnings("unused")
-    private HelpScreen helpScreen;
+    private Help helpScreen;
+    private About aboutScreen;
 
-    public MenuManager(ImageFileManager fileManager, Zoom zoom, ToolManager toolManager, HelpScreen helpScreen) {
+    public MenuManager(ImageFileManager fileManager, Zoom zoom, ToolManager toolManager, Help helpScreen, About aboutScreen) {
 
         // initializes the apps menus and connects their actions to the appropriate
         // methods in other classes
@@ -52,6 +53,7 @@ public class MenuManager {
         this.zoom = zoom;
         this.toolManager = toolManager;
         this.helpScreen = helpScreen;
+        this.aboutScreen = aboutScreen;
 
         menuBar = new MenuBar();
         toolBar = new MenuBar();
@@ -112,7 +114,7 @@ public class MenuManager {
         // connects the help menu selections to the methods in the helpscreen class
         // that open the help/about windows
         helpItem.setOnAction(event -> helpScreen.help());
-        aboutItem.setOnAction(event -> helpScreen.about());
+        aboutItem.setOnAction(event -> aboutScreen.about());
     }
 
     /**
