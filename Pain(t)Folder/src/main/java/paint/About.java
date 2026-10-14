@@ -1,4 +1,4 @@
-package paint;
+package main.java.paint;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
