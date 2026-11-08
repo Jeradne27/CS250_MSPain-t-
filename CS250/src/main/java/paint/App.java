@@ -9,6 +9,7 @@ import javafx.scene.canvas.Canvas;
 
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.Button;
 
 import javafx.scene.input.MouseEvent;
 
@@ -36,6 +37,9 @@ import paint.Tools.Circles;
 import paint.Tools.Ellipses;
 import paint.Tools.Triangles;
 import paint.Tools.Diamonds;
+import paint.Tools.Hearts;
+import paint.Tools.Pentagons;
+import paint.Tools.RightTriangles;
 import paint.Tools.Eraser;
 
 import javafx.scene.Scene;
@@ -86,6 +90,9 @@ public class App extends Application {
     private Ellipses ellipses;
     private Triangles triangles;
     private Diamonds diamonds;
+    private Hearts hearts;
+    private Pentagons pentagons;
+    private RightTriangles rightTriangles;
 
     /**
      * Starts the application.
@@ -171,8 +178,11 @@ public class App extends Application {
         Ellipses ellipses = new Ellipses(fileCanvas);
         Triangles triangles = new Triangles(fileCanvas);
         Diamonds diamonds = new Diamonds(fileCanvas);
+        Hearts hearts = new Hearts(fileCanvas);
+        Pentagons pentagons = new Pentagons(fileCanvas);
+        RightTriangles rightTriangles = new RightTriangles(fileCanvas);
 
-        ToolMenu toolMenu = new ToolMenu(lines, pencil, eraser, rectangles, squares, circles, ellipses, triangles, diamonds, styleMenu, fileCanvas);
+        ToolMenu toolMenu = new ToolMenu(lines, pencil, eraser, rectangles, squares, circles, ellipses, triangles, diamonds, hearts, pentagons, rightTriangles, styleMenu, fileCanvas);
     
         file.setToolMenu(toolMenu);
         file.setStyleMenu(styleMenu);

@@ -3,9 +3,15 @@ package paint.Operations;
 import java.io.File;
 
 import javafx.scene.canvas.Canvas;
+
 import javafx.scene.control.Tab;
+
 import javafx.scene.image.ImageView;
+
 import javafx.scene.layout.StackPane;
+
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 import paint.Menus.ToolMenu;
 import paint.Menus.StyleMenu;
@@ -28,6 +34,8 @@ public class FileTab {
    // each fileTab has its own image and canvas
    private final ImageView imageView = new ImageView();
    private final Canvas canvas = new Canvas(500, 500);
+
+   private final HistoryStack historyStack = new HistoryStack(canvas);
 
    private final StackPane drawingArea = new StackPane(imageView, canvas);
 
@@ -56,6 +64,8 @@ public class FileTab {
       drawingArea.setMinSize(StackPane.USE_PREF_SIZE, StackPane.USE_PREF_SIZE);
       drawingArea.setMaxSize(StackPane.USE_PREF_SIZE, StackPane.USE_PREF_SIZE);
 
+      drawingArea.getStyleClass().add("drawingarea");
+
       StackPane workSpace = new StackPane(drawingArea);
       workSpace.setMinSize(0, 0);
       workSpace.getStyleClass().add("workspace");
@@ -63,6 +73,12 @@ public class FileTab {
       tab = new Tab(title, workSpace);
       tab.setClosable(true);
       tab.setUserData(this);
+
+      canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+         if (event.getButton() == MouseButton.PRIMARY && (canvas.getOnMousePressed() != null || canvas.getOnMouseDragged() != null || canvas.getOnMouseReleased() != null)) {
+            historyStack.recordChange();
+         }
+      });
 
    }
 
@@ -148,5 +164,25 @@ public class FileTab {
     */
    public void clearModified() {
       setModified(false);
+   }
+
+   public void undo() {
+      if (historyStack.undo()) {
+         setModified(true);
+      }
+   }
+
+   public void redo() {
+      if (historyStack.redo()) {
+         setModified(true);
+      }
+   }
+
+   public void clearCanvas() {
+      historyStack.recordChange();
+
+      canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+      setModified(true);
    }
 }

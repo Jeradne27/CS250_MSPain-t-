@@ -4,6 +4,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.Button;
 
 import javafx.scene.canvas.Canvas;
 
@@ -18,6 +19,9 @@ import paint.Tools.Ellipses;
 import paint.Tools.Eraser;
 import paint.Tools.Triangles;
 import paint.Tools.Diamonds;
+import paint.Tools.Hearts;
+import paint.Tools.Pentagons;
+import paint.Tools.RightTriangles;
 import paint.Tools.Drawing;
 
 /**
@@ -54,7 +58,11 @@ public class ToolMenu {
     private Ellipses ellipses;
     private Triangles triangles;
     private Diamonds diamonds;
+    private Hearts hearts;
+    private Pentagons pentagons;
+    private RightTriangles rightTriangles;
     private StyleMenu styleMenu;
+
 
     /**
      * Creates a new tool menu.
@@ -67,10 +75,12 @@ public class ToolMenu {
      * @param ellipses The ellipses tool.
      * @param triangles The triangles tool.
      * @param diamonds The diamonds tool.
+     * @param pentagons The pentagons tool.
+     * @param rightTriangles The right triangles tool.
      * @param styleMenu The style menu.
      * @param canvas The canvas to draw on.
      */
-    public ToolMenu(Lines lines, Pencil pencil, Eraser eraser, Rectangles rectangles, Squares squares, Circles circles, Ellipses ellipses, Triangles triangles, Diamonds diamonds, StyleMenu styleMenu, Canvas canvas) {
+    public ToolMenu(Lines lines, Pencil pencil, Eraser eraser, Rectangles rectangles, Squares squares, Circles circles, Ellipses ellipses, Triangles triangles, Diamonds diamonds, Hearts hearts, Pentagons pentagons, RightTriangles rightTriangles, StyleMenu styleMenu, Canvas canvas) {
         this.lines = lines;
         this.pencil = pencil;
         this.eraser = eraser;
@@ -80,6 +90,9 @@ public class ToolMenu {
         this.ellipses = ellipses;
         this.triangles = triangles;
         this.diamonds = diamonds;
+        this.hearts = hearts;
+        this.pentagons = pentagons;
+        this.rightTriangles = rightTriangles;
         this.styleMenu = styleMenu;
         
         toolBar = new MenuBar();
@@ -101,6 +114,9 @@ public class ToolMenu {
         MenuItem ellipseItem = new MenuItem("Ellipse");
         MenuItem triangleItem = new MenuItem("Triangle");
         MenuItem diamondItem = new MenuItem("Diamond");
+        MenuItem heartItem = new MenuItem("Heart");
+        MenuItem pentagonItem = new MenuItem("Pentagon");
+        MenuItem rightTriangleItem = new MenuItem("Right Triangle");
 
         shapeMenu.getItems().add(rectangleItem);
         shapeMenu.getItems().add(squareItem);
@@ -108,6 +124,9 @@ public class ToolMenu {
         shapeMenu.getItems().add(ellipseItem);
         shapeMenu.getItems().add(triangleItem);
         shapeMenu.getItems().add(diamondItem);
+        shapeMenu.getItems().add(heartItem);
+        shapeMenu.getItems().add(pentagonItem);
+        shapeMenu.getItems().add(rightTriangleItem);
 
         toolBar.getMenus().add(shapeMenu);
         
@@ -149,6 +168,18 @@ public class ToolMenu {
         diamondItem.setOnAction(event -> {
             styleMenu.setSelectedTool(diamonds);
             selectTool(diamonds, canvas);
+        });
+        heartItem.setOnAction(event -> {
+            styleMenu.setSelectedTool(hearts);
+            selectTool(hearts, canvas);
+        });
+        pentagonItem.setOnAction(event -> {
+            styleMenu.setSelectedTool(pentagons);
+            selectTool(pentagons, canvas);
+        });
+        rightTriangleItem.setOnAction(event -> {
+            styleMenu.setSelectedTool(rightTriangles);
+            selectTool(rightTriangles, canvas);
         });
     }
     

@@ -71,6 +71,7 @@ public class MainMenu {
 
         // file operations that are handled by the imagefiles manager
         MenuItem openItem = new MenuItem("Open");
+        MenuItem newTabItem = new MenuItem("New Tab");
         MenuItem openTabItem = new MenuItem("Open In New Tab");
         MenuItem saveItem = new MenuItem("Save");
         MenuItem saveAsItem = new MenuItem("Save As");
@@ -85,7 +86,7 @@ public class MainMenu {
 
         menuBar.getMenus().addAll(fileMenu, zoomMenu, helpMenu);
 
-        fileMenu.getItems().addAll(openItem, openTabItem, saveItem, saveAsItem, closeItem);
+        fileMenu.getItems().addAll(openItem, newTabItem, openTabItem, saveItem, saveAsItem, closeItem);
     
         zoomMenu.getItems().addAll(resetZoomItem);
 
@@ -100,6 +101,9 @@ public class MainMenu {
         openItem.setOnAction(event -> files.openImage());
         openItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
 
+        newTabItem.setOnAction(event -> files.newImage());
+        newTabItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
+
         openTabItem.setOnAction(event -> files.openImageInNewTab());
         openTabItem.setAccelerator(new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN));
 
@@ -110,13 +114,17 @@ public class MainMenu {
         saveAsItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
 
         closeItem.setOnAction(event -> files.close());
+        closeItem.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
 
         resetZoomItem.setOnAction(event -> zoom.resetZoom());
+        resetZoomItem.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
 
         // connects the help menu selections to the methods in the helpscreen class
         // that open the help/about windows
         helpItem.setOnAction(event -> helpScreen.help());
+        helpItem.setAccelerator(new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN));
         aboutItem.setOnAction(event -> aboutScreen.about());
+        aboutItem.setAccelerator(new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN));
     }
 
     /**

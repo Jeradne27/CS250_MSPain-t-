@@ -48,7 +48,7 @@ public class StyleMenu {
     private final ColorPicker colorPicker = new ColorPicker();
     private final Button colorDropper = new Button("Color Dropper");
     private final Slider widthSlider = new Slider(1, 20, 5);
-    private final MenuButton widthMenu = new MenuButton("Width");
+    private final MenuButton widthMenu = new MenuButton("Width"); 
     private final Button eraserButton = new Button("Eraser");
     private final CheckBox dashedCheckBox = new CheckBox("Dashed");
 
