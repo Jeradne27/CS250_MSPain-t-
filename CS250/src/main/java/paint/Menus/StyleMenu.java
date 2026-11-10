@@ -3,10 +3,13 @@ package paint.Menus;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Slider;
@@ -19,6 +22,7 @@ import javafx.geometry.Insets;
 
 import paint.Tools.Eraser;
 import paint.Tools.Drawing;
+import paint.Operations.FileTab;
 
 /**
  * StyleMenu class represents the style menu for the application.
@@ -51,6 +55,10 @@ public class StyleMenu {
     private final MenuButton widthMenu = new MenuButton("Width"); 
     private final Button eraserButton = new Button("Eraser");
     private final CheckBox dashedCheckBox = new CheckBox("Dashed");
+    private final Button undoButton = new Button("Undo");
+    private final Button redoButton = new Button("Redo");
+    private final Button clearButton = new Button("Clear");
+    private final Alert clearAlert = new Alert(AlertType.CONFIRMATION);
 
     /**
      * Sets the currently selected drawing tool.
@@ -69,8 +77,9 @@ public class StyleMenu {
      * Creates a new style menu.
      * @param canvas The canvas to draw on.
      * @param drawingArea The area where the canvas is displayed.
+     * @param tab The file tab associated with the style menu.
      */
-    public StyleMenu(Canvas canvas, StackPane drawingArea) {
+    public StyleMenu(Canvas canvas, StackPane drawingArea, FileTab tab) {
         this.canvas = canvas;
         this.drawingArea = drawingArea;
 
@@ -120,12 +129,41 @@ public class StyleMenu {
             eraser.activateTool(canvas);
         });
 
+        undoButton.setOnAction(event -> {
+            if (tab != null) {
+                tab.undo();
+            }
+        });
+
+        redoButton.setOnAction(event -> {
+            if (tab != null) {
+                tab.redo();
+            }
+        });
+
+        clearButton.setOnAction(event -> {
+            if (tab != null) {
+                clearAlert.setTitle("Clear Canvas");
+                clearAlert.setHeaderText("Are you sure you want to clear the canvas?");
+                clearAlert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        tab.clearCanvas();
+                    }
+                });
+            }
+
+
+        });
+
         toolbar = new ToolBar(
             colorPicker,
             colorDropper,
             widthMenu,
             eraserButton,
-            dashedCheckBox
+            dashedCheckBox,
+            undoButton,
+            redoButton,
+            clearButton
         );
 
         // Ensures the toolbar is enabled.

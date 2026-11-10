@@ -185,4 +185,10 @@ public class FileTab {
 
       setModified(true);
    }
+
+   public void applyEdit(Runnable edit) {
+      historyStack.recordChange();
+      edit.run();
+      setModified(true);
+   }
 }

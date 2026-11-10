@@ -22,6 +22,7 @@ import paint.Tools.Diamonds;
 import paint.Tools.Hearts;
 import paint.Tools.Pentagons;
 import paint.Tools.RightTriangles;
+import paint.Tools.Text;
 import paint.Tools.Drawing;
 
 /**
@@ -61,6 +62,7 @@ public class ToolMenu {
     private Hearts hearts;
     private Pentagons pentagons;
     private RightTriangles rightTriangles;
+    private Text text;
     private StyleMenu styleMenu;
 
 
@@ -80,7 +82,7 @@ public class ToolMenu {
      * @param styleMenu The style menu.
      * @param canvas The canvas to draw on.
      */
-    public ToolMenu(Lines lines, Pencil pencil, Eraser eraser, Rectangles rectangles, Squares squares, Circles circles, Ellipses ellipses, Triangles triangles, Diamonds diamonds, Hearts hearts, Pentagons pentagons, RightTriangles rightTriangles, StyleMenu styleMenu, Canvas canvas) {
+    public ToolMenu(Lines lines, Pencil pencil, Eraser eraser, Rectangles rectangles, Squares squares, Circles circles, Ellipses ellipses, Triangles triangles, Diamonds diamonds, Hearts hearts, Pentagons pentagons, RightTriangles rightTriangles, Text text,StyleMenu styleMenu, Canvas canvas) {
         this.lines = lines;
         this.pencil = pencil;
         this.eraser = eraser;
@@ -93,6 +95,7 @@ public class ToolMenu {
         this.hearts = hearts;
         this.pentagons = pentagons;
         this.rightTriangles = rightTriangles;
+        this.text = text;
         this.styleMenu = styleMenu;
         
         toolBar = new MenuBar();
@@ -101,9 +104,12 @@ public class ToolMenu {
         MenuItem lineItem = new MenuItem("Line");
         MenuItem pencilItem = new MenuItem("Pencil");
         MenuItem eraserItem = new MenuItem("Eraser");
+        MenuItem textItem = new MenuItem("Text");
+
         drawMenu.getItems().add(lineItem);
         drawMenu.getItems().add(pencilItem);
         drawMenu.getItems().add(eraserItem);
+        drawMenu.getItems().add(textItem);
         toolBar.getMenus().add(drawMenu);
 
         Menu shapeMenu = new Menu("Shapes");
@@ -180,6 +186,10 @@ public class ToolMenu {
         rightTriangleItem.setOnAction(event -> {
             styleMenu.setSelectedTool(rightTriangles);
             selectTool(rightTriangles, canvas);
+        });
+        textItem.setOnAction(event -> {
+            styleMenu.setSelectedTool(text);
+            selectTool(text, canvas);
         });
     }
     

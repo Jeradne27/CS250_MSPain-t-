@@ -5,6 +5,8 @@ import javafx.application.Application;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.geometry.Pos;
+
 import javafx.scene.canvas.Canvas;
 
 import javafx.scene.control.Tab;
@@ -41,6 +43,7 @@ import paint.Tools.Hearts;
 import paint.Tools.Pentagons;
 import paint.Tools.RightTriangles;
 import paint.Tools.Eraser;
+import paint.Tools.Text;
 
 import javafx.scene.Scene;
 
@@ -93,6 +96,7 @@ public class App extends Application {
     private Hearts hearts;
     private Pentagons pentagons;
     private RightTriangles rightTriangles;
+    private Text text;
 
     /**
      * Starts the application.
@@ -114,6 +118,7 @@ public class App extends Application {
         tabPane.setMinSize(0, 0);
         pane.setCenter(tabPane);
         pane.setTop(top);
+
 
         // Add a listener to the tab selection model to update the tool and style menus when a different tab is selected.
         tabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {showTabMenus();});
@@ -166,7 +171,7 @@ public class App extends Application {
         Canvas fileCanvas = file.getCanvas();
 
         // Initialize the style menu for the new file tab.
-        StyleMenu styleMenu = new StyleMenu(fileCanvas, file.getDrawingArea());
+        StyleMenu styleMenu = new StyleMenu(fileCanvas, file.getDrawingArea(), file);
 
         Lines lines = new Lines(fileCanvas);
         Pencil pencil = new Pencil(fileCanvas);
@@ -181,8 +186,9 @@ public class App extends Application {
         Hearts hearts = new Hearts(fileCanvas);
         Pentagons pentagons = new Pentagons(fileCanvas);
         RightTriangles rightTriangles = new RightTriangles(fileCanvas);
+        Text text = new Text(file, file::applyEdit);
 
-        ToolMenu toolMenu = new ToolMenu(lines, pencil, eraser, rectangles, squares, circles, ellipses, triangles, diamonds, hearts, pentagons, rightTriangles, styleMenu, fileCanvas);
+        ToolMenu toolMenu = new ToolMenu(lines, pencil, eraser, rectangles, squares, circles, ellipses, triangles, diamonds, hearts, pentagons, rightTriangles, text, styleMenu, fileCanvas);
     
         file.setToolMenu(toolMenu);
         file.setStyleMenu(styleMenu);
