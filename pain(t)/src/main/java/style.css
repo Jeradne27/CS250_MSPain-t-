@@ -1,0 +1,53 @@
+.root {
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+}
+
+/* Menu Stuff */
+
+.menubar {
+    -fx-background-color: #ffffff;
+    -fx-padding: 4px;
+}
+
+.toolbar {
+    -fx-background-color: #f6f6f6;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 1px 0px 1px 0px;
+}
+
+.label{
+    -fx-text-fill: #333333;
+}
+
+/* workspace */
+
+.workspace {
+    -fx-background-color: #e8e8e8;
+    -fx-padding: 30px;
+}
+
+.drawingarea {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0, 0, 0, 0.18),
+        12, 0, 0, 3
+    );
+}
+
+.colorpicker {
+    -fx-background-radius: 5px;
+}
+
+.slider .track {
+    -fx-background-color: #dddddd;
+}
+
+.slider .thumb {
+    -fx-background-color: #777777;
+}
