@@ -14,7 +14,6 @@ import paint.TopMenuBar.About;
 import paint.TopMenuBar.Help;
 import paint.TopMenuBar.Zoom;
 
-
 /**
  * MainMenu class represents the main menu bar for the application.
  * It manages the menu items and their actions, including file operations, zooming, and accessing help and about screens.

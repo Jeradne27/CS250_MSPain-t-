@@ -3,6 +3,7 @@ package paint.Menus;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Button;
 
@@ -11,6 +12,10 @@ import javafx.scene.canvas.Canvas;
 import paint.Menus.StyleMenu;
 
 import javafx.scene.layout.HBox;
+
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 
 import paint.Operations.FileTab;
 
@@ -29,6 +34,7 @@ import paint.Tools.Hearts;
 import paint.Tools.Pentagons;
 import paint.Tools.RightTriangles;
 import paint.Tools.Drawing;
+import paint.Tools.Selection;
 
 /**
  * ToolMenu class represents the tool menu for the application.
@@ -50,6 +56,7 @@ import paint.Tools.Drawing;
 // - There is no preview of the drawing before it is placed on the canvas.
 
 public class ToolMenu {
+    private final Canvas canvas;
 
     // Calls to outside classes
     private Drawing<?> activeTool;
@@ -70,6 +77,7 @@ public class ToolMenu {
     private Pentagons pentagons;
     private RightTriangles rightTriangles;
     private Text text;
+    private Selection selection;
     private StyleMenu styleMenu;
 
 
@@ -91,7 +99,7 @@ public class ToolMenu {
      * @param styleMenu The style menu.
      * @param canvas The canvas to draw on.
      */
-    public ToolMenu(Lines lines, Pencil pencil, Eraser eraser, Rectangles rectangles, Squares squares, Circles circles, Ellipses ellipses, Triangles triangles, Diamonds diamonds, Hearts hearts, Pentagons pentagons, RightTriangles rightTriangles, Text text, StyleMenu styleMenu, Canvas canvas, FileTab file) {
+    public ToolMenu(Lines lines, Pencil pencil, Eraser eraser, Rectangles rectangles, Squares squares, Circles circles, Ellipses ellipses, Triangles triangles, Diamonds diamonds, Hearts hearts, Pentagons pentagons, RightTriangles rightTriangles, Text text, Selection selection, StyleMenu styleMenu, Canvas canvas, FileTab file) {
         this.lines = lines;
         this.pencil = pencil;
         this.eraser = eraser;
@@ -105,7 +113,9 @@ public class ToolMenu {
         this.pentagons = pentagons;
         this.rightTriangles = rightTriangles;
         this.text = text;
+        this.selection = selection;
         this.styleMenu = styleMenu;
+        this.canvas = canvas;
         
         toolBar = new MenuBar();
 
@@ -124,12 +134,22 @@ public class ToolMenu {
         MenuItem lineItem = new MenuItem("Line");
         MenuItem pencilItem = new MenuItem("Pencil");
         MenuItem textItem = new MenuItem("Text");
+        MenuItem selectItem = new MenuItem("Select");
         drawMenu.getItems().add(lineItem);
         drawMenu.getItems().add(pencilItem);
         drawMenu.getItems().add(textItem);
+        drawMenu.getItems().add(selectItem);
         toolBar.getMenus().add(drawMenu);
 
         Menu shapeMenu = new Menu("Shapes");
+
+        Menu editMenu = new Menu("Edit");
+
+        MenuItem copyItem = new MenuItem("Copy");
+        MenuItem cutItem = new MenuItem("Cut");
+        MenuItem pasteItem = new MenuItem("Paste");
+
+        editMenu.getItems().addAll(copyItem, cutItem, pasteItem);
 
         MenuItem rectangleItem = new MenuItem("Rectangle");
         MenuItem squareItem = new MenuItem("Square");
@@ -151,8 +171,8 @@ public class ToolMenu {
         shapeMenu.getItems().add(pentagonItem);
         shapeMenu.getItems().add(rightTriangleItem);
 
-        toolBar.getMenus().add(shapeMenu);
-        
+        toolBar.getMenus().addAll(shapeMenu, editMenu);
+
         lineItem.setOnAction(event -> {
             styleMenu.setSelectedTool(lines);
             selectTool(lines, canvas);
@@ -162,52 +182,84 @@ public class ToolMenu {
             styleMenu.setSelectedTool(pencil);
             selectTool(pencil, canvas);
         });
-        
+
         eraserButton.setOnAction(event -> {
             styleMenu.setSelectedTool(eraser);
             selectTool(eraser, canvas);
         });
+
         textItem.setOnAction(event -> {
             styleMenu.setSelectedTool(text);
             selectTool(text, canvas);
         });
 
+        selectItem.setOnAction(event -> {
+            styleMenu.setSelectedTool(selection);
+            selectTool(selection, canvas);
+        });
+
+        copyItem.setOnAction(event -> selection.copySelection());
+        copyItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
+
+        cutItem.setOnAction(event -> selection.cutSelection());
+        cutItem.setAccelerator(new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN));
+
+        pasteItem.setOnAction(event -> {
+            selectTool(selection, canvas);
+            selection.pasteSelection();
+        });
+        pasteItem.setAccelerator(new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN));
+        
         rectangleItem.setOnAction(event -> {
             styleMenu.setSelectedTool(rectangles);
             selectTool(rectangles, canvas);
         });
+
         squareItem.setOnAction(event -> {
             styleMenu.setSelectedTool(squares);
             selectTool(squares, canvas);
         });
+        
         circleItem.setOnAction(event -> {
             styleMenu.setSelectedTool(circles);
             selectTool(circles, canvas);
         });
+
         ellipseItem.setOnAction(event -> {
             styleMenu.setSelectedTool(ellipses);
             selectTool(ellipses, canvas);
         });
+
         triangleItem.setOnAction(event -> {
             styleMenu.setSelectedTool(triangles);
             selectTool(triangles, canvas);
         });
+
         diamondItem.setOnAction(event -> {
             styleMenu.setSelectedTool(diamonds);
             selectTool(diamonds, canvas);
         });
+
         heartItem.setOnAction(event -> {
             styleMenu.setSelectedTool(hearts);
             selectTool(hearts, canvas);
         });
+
         pentagonItem.setOnAction(event -> {
             styleMenu.setSelectedTool(pentagons);
             selectTool(pentagons, canvas);
         });
+
         rightTriangleItem.setOnAction(event -> {
             styleMenu.setSelectedTool(rightTriangles);
             selectTool(rightTriangles, canvas);
         });
+    }
+
+    private MenuItem toolItem(String label, Drawing<?> tool) {
+        MenuItem item = new MenuItem(label);
+        item.setOnAction(event -> selectTool(tool, canvas));
+        return item;
     }
     
     /**
@@ -222,6 +274,7 @@ public class ToolMenu {
         }
         // Activate the new tool on the canvas.
         activeTool = nextTool;
+        styleMenu.setSelectedTool(activeTool);
         activeTool.activateTool(canvas);
     }
 

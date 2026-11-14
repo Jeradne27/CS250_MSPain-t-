@@ -12,6 +12,8 @@ import java.util.function.Supplier;
 
 import javafx.embed.swing.SwingFXUtils;
 
+import javafx.scene.SnapshotParameters;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
@@ -117,16 +119,17 @@ public class ImageFiles {
             return;
         }
 
-        // Update the image view with the loaded image.
-        fileTab.getImageView().setImage(image);
-        fileTab.getImageView().setPreserveRatio(true);
-
         Canvas canvas = fileTab.getCanvas();
 
         canvas.setWidth(image.getWidth());
         canvas.setHeight(image.getHeight());
 
-        canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        var graphics = canvas.getGraphicsContext2D();
+        graphics.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        graphics.drawImage(image, 0, 0);
+
+        fileTab.getImageView().setImage(null);
+        fileTab.clearHistory();
 
         fileTab.getDrawingArea().setScaleX(1);
         fileTab.getDrawingArea().setScaleY(1);
@@ -172,11 +175,14 @@ public class ImageFiles {
 
         // Temporarily reset the drawing area scale to capture the image at its actual size.
         try {
-            fileTab.getDrawingArea().setScaleX(1);
-            fileTab.getDrawingArea().setScaleY(1);
+            SnapshotParameters param = new SnapshotParameters();
+            param.setFill(Color.TRANSPARENT);
+
+            // fileTab.getDrawingArea().setScaleX(1);
+            // fileTab.getDrawingArea().setScaleY(1);
 
             // Capture the image from the drawing area.
-            WritableImage comboImage = fileTab.getDrawingArea().snapshot(null, null);
+            WritableImage comboImage = fileTab.getDrawingArea().snapshot(param, null);
             BufferedImage bufImage = SwingFXUtils.fromFXImage(comboImage, null);
             String currentFormat = getFormat(file);
 
@@ -188,13 +194,16 @@ public class ImageFiles {
                     BufferedImage.TYPE_INT_RGB
                  );
 
-                 java.awt.Graphics2D graphics = opImage.createGraphics();
+                 var graphics = opImage.createGraphics();
 
-                 // Draw a white background to handle transparency.
-                 graphics.setColor(java.awt.Color.WHITE);
-                 graphics.fillRect(0, 0, opImage.getWidth(), opImage.getHeight());
-                 graphics.drawImage(bufImage, 0, 0, null);
-
+                 try {
+                    graphics.setColor(java.awt.Color.WHITE);
+                    graphics.fillRect(0, 0, opImage.getWidth(), opImage.getHeight());
+                    graphics.drawImage(bufImage, 0, 0, null);
+                 } finally {
+                    graphics.dispose();
+                 }
+                 // Draw a white background to handle transparency.                
                  bufImage = opImage;
             }
 
@@ -205,7 +214,6 @@ public class ImageFiles {
                 fileTab.setFile(file);
                 fileTab.clearModified();
             }
-
             return saved;
         } catch (Exception e) {
             // Print the exception stack trace for debugging purposes.

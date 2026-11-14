@@ -44,6 +44,7 @@ import paint.Tools.Pentagons;
 import paint.Tools.RightTriangles;
 import paint.Tools.Text;
 import paint.Tools.Eraser;
+import paint.Tools.Selection;
 
 import javafx.scene.Scene;
 
@@ -187,8 +188,9 @@ public class App extends Application {
         Pentagons pentagons = new Pentagons(fileCanvas, file.getPreviewCanvas());
         RightTriangles rightTriangles = new RightTriangles(fileCanvas, file.getPreviewCanvas());
         Text text = new Text(fileCanvas, file::canvasEdit);
+        Selection selection = new Selection(file);
 
-        ToolMenu toolMenu = new ToolMenu(lines, pencil, eraser, rectangles, squares, circles, ellipses, triangles, diamonds, hearts, pentagons, rightTriangles, text, styleMenu, fileCanvas, file);
+        ToolMenu toolMenu = new ToolMenu(lines, pencil, eraser, rectangles, squares, circles, ellipses, triangles, diamonds, hearts, pentagons, rightTriangles, text, selection, styleMenu, fileCanvas, file);
     
         file.setToolMenu(toolMenu);
         file.setStyleMenu(styleMenu);

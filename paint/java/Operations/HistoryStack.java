@@ -53,6 +53,11 @@ public class HistoryStack {
         return !redoStack.isEmpty();
     }
 
+    public void clear() {
+        undoStack.clear();
+        redoStack.clear();
+    }
+
     private boolean restoreFrom(Deque<WritableImage> source, Deque<WritableImage> destination) {
         if (source.isEmpty()) {
             return false;

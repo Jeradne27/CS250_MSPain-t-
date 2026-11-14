@@ -196,6 +196,10 @@ public class FileTab {
       setModified(true);
    }
 
+   public void clearHistory() {
+      historyStack.clear();
+    }
+
    public void canvasEdit(Runnable edit) {
       historyStack.recordChange();
       edit.run();
