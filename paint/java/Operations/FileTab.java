@@ -255,6 +255,7 @@ public class FileTab {
 
    /**
     * Clears the canvas, removing all drawings.
+    * Prompts the user for confirmation before clearing the canvas.
     */
    public void clearCanvas() {
       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -265,7 +266,7 @@ public class FileTab {
       if (alert.showAndWait().get() != ButtonType.OK) {
          return;
       }
-      
+
       historyStack.recordChange();
 
       canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
