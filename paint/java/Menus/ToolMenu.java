@@ -134,6 +134,7 @@ public class ToolMenu {
 
         // Creates the horizontal box containing the tool bar and the action buttons.
         toolMenuRow = new HBox(5, toolBar, eraserButton, undoButton, redoButton, clearButton);
+        toolMenuRow.getStyleClass().add("tool-menu-row");
 
         // Creates the draw menu and adds it to the tool bar.
         Menu drawMenu = new Menu("Draw");

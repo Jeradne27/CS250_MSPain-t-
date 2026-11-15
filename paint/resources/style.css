@@ -3,28 +3,55 @@
  */
 
 .root {
-    font-family: Arial;
-    font-family: "Arial";
-    font-size: 13px;
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
 }
 
 /**
  * Styles for the menu bar and toolbars.
  */
-.menubar {
-    background-color: #ffffff;
-    padding: 4px;
+.menu-bar {
+    -fx-background-color: #e4e4e4;
+    -fx-alignment: center-left;
+    -fx-spacing: 5px;
+
+    -fx-border-color: #dddddd;
+    -fx-border-width: 0px 0px 1px 0px;
 }
 
-.toolbar {
-    background-color: #f6f6f6;
-    padding: 10px;
-    -fx-spacing: 10px;
-    border-color: #dddddd;
-    border-width: 1px 0px 1px 0px;
+.tool-bar {
+    -fx-background-color: #e4e4e4;
+    -fx-alignment: center-left;
+    -fx-spacing: 5px;
+
+    -fx-border-color: #dddddd;
+    -fx-border-width: 0px 0px 1px 0px;
 }
 
-.label{
+.tool-menu-row {
+    -fx-background-color: #e4e4e4;
+    -fx-alignment: center-left;
+    -fx-spacing: 5px;
+
+    -fx-border-color: #dddddd;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.tool-menu-row > .menu-bar {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.width-options {
+    -fx-background-color: #e4e4e4;
+    -fx-alignment: center-left;
+    -fx-spacing: 5px;
+
+    -fx-border-color: #dddddd;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.label {
     -fx-text-fill: #333333;
 }
 
@@ -32,29 +59,24 @@
  * Styles for the workspace area.
  */
 .workspace {
-    background-color: #e8e8e8;
-    padding: 30px;
+    -fx-background-color: #5c5a5a;
+    -fx-padding: 30px;
 }
 
 /**
  * Styles for the drawing area within the workspace.
  */
 .drawingarea {
-    background-color: white;
     -fx-background-color: white;
-    /* border-color: #cccccc;
-    border-width: 1px;
-    -fx-effect: dropshadow(
-        gaussian,
-        rgba(0, 0, 0, 0.18),
-        12, 0, 0, 3
-    ); */
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 12, 0, 0, 3);
 }
 
 /**
  * Styles for the color picker.
  */
-.colorpicker {
+.color-picker {
     -fx-background-radius: 5px;
 }
 
@@ -62,12 +84,12 @@
  * Styles for the slider.
  */
 .slider .track {
-    background-color: #dddddd;
+    -fx-background-color: #dddddd;
 }
 
 /**
  * Styles for the slider thumb.
  */
 .slider .thumb {
-    background-color: #777777;
+    -fx-background-color: #777777;
 }
