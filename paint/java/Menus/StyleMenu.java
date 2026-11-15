@@ -100,6 +100,7 @@ public class StyleMenu {
         
         // Creates the VBox containing the width slider and apply button.
         VBox widthOptions = new VBox(10, widthSlider, applyWidth);
+        widthOptions.getStyleClass().add("width-options");
         
         // Adds padding to the width options container.
         widthOptions.setPadding(new Insets(10));
