@@ -5,6 +5,8 @@ import java.io.File;
 import javafx.scene.canvas.Canvas;
 
 import javafx.scene.control.Tab;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import javafx.scene.image.ImageView;
 
@@ -253,8 +255,18 @@ public class FileTab {
 
    /**
     * Clears the canvas, removing all drawings.
+    * Prompts the user for confirmation before clearing the canvas.
     */
    public void clearCanvas() {
+      Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+      alert.setTitle("Clear Canvas");
+      alert.setHeaderText("Are you sure you want to clear the canvas?");
+      alert.setContentText("This action cannot be undone.");
+
+      if (alert.showAndWait().get() != ButtonType.OK) {
+         return;
+      }
+
       historyStack.recordChange();
 
       canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
