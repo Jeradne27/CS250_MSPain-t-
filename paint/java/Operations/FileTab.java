@@ -21,7 +21,7 @@ import paint.Menus.StyleMenu;
  */
 
 // IMPROVEMENTS:
-// - The tabs don't have a border or visual separation between them. Considering adding a border or background color to distinguish them.
+// - The tab pane could have a visual indicator for the active tab, such as a highlighted border or background color.
 // - The workspace area could have a background color or border to visually separate it from the tab headers.
 // - The drawing area could have a border or background color to visually separate it from the workspace.
 // - The tab title could be made editable to allow renaming without changing the file name.
@@ -29,6 +29,8 @@ import paint.Menus.StyleMenu;
 
 // ISSUES:
 // - The only way to rename a tab is to change the file name completely
+// - The tab pane could have a visual indicator for the active tab, such as a highlighted border or background color.
+// - The workspace area could have a background color or border to visually separate it from the tab headers.
 
 public class FileTab {
    // each fileTab has its own image and canvas
@@ -88,48 +90,98 @@ public class FileTab {
 
    }
 
+   /**
+    * Returns the ImageView associated with this file tab.
+    *
+    * @return the ImageView
+    */
    public ImageView getImageView() {
       return imageView;
    }
 
+   /**
+    * Returns the Canvas associated with this file tab.
+    *
+    * @return the Canvas
+    */
    public Canvas getCanvas() {
       return canvas;
    }
 
+   /**
+    * Returns the preview Canvas associated with this file tab.
+    *
+    * @return the preview Canvas
+    */
    public Canvas getPreviewCanvas() {
       return previewCanvas;
    }
 
+   /**
+    * Returns the drawing area associated with this file tab.
+    *
+    * @return the drawing area
+    */
    public StackPane getDrawingArea() {
       return drawingArea;
    }
 
+   /**
+    * Returns the ToolMenu associated with this file tab.
+    *
+    * @return the ToolMenu
+    */
    public ToolMenu getToolMenu() {
       return toolMenu;
    }
 
+   /**
+    * Sets the ToolMenu associated with this file tab.
+    *
+    * @param toolMenu the ToolMenu to set
+    */
    public void setToolMenu(ToolMenu toolMenu) {
       this.toolMenu = toolMenu;
    }
 
+   /**
+    * Returns the StyleMenu associated with this file tab.
+    *
+    * @return the StyleMenu
+    */
    public StyleMenu getStyleMenu() {
       return styleMenu;
    }
 
+   /**
+    * Sets the StyleMenu associated with this file tab.
+    *
+    * @param styleMenu the StyleMenu to set
+    */
    public void setStyleMenu(StyleMenu styleMenu) {
       this.styleMenu = styleMenu;
    }
 
+   /**
+    * Returns the Tab associated with this file tab.
+    *
+    * @return the Tab
+    */
    public Tab getTab() {
       return tab;
    }
 
+   /**
+    * Returns the File associated with this file tab.
+    *
+    * @return the File
+    */
    public File getFile() {
       return file;
    }
 
    /**
-    * Sets the file associated with this tab.
+    * Sets the file associated with this file tab.
     *
     * @param file the file to set
     */
@@ -138,6 +190,11 @@ public class FileTab {
       setModified(modified);
    }
 
+   /**
+    * Returns whether the file associated with this file tab has unsaved changes.
+    *
+    * @return true if the file has unsaved changes, false otherwise
+    */
    public boolean isModified() {
       return modified;
    }
@@ -176,18 +233,27 @@ public class FileTab {
       setModified(false);
    }
 
+   /**
+    * Undoes the last change made to the canvas.
+    */
    public void undo() {
       if (historyStack.undo()) {
          setModified(true);
       }
    }
 
+   /**
+    * Redoes the last undone change made to the canvas.
+    */
    public void redo() {
       if (historyStack.redo()) {
          setModified(true);
       }
    }
 
+   /**
+    * Clears the canvas, removing all drawings.
+    */
    public void clearCanvas() {
       historyStack.recordChange();
 
@@ -196,10 +262,18 @@ public class FileTab {
       setModified(true);
    }
 
+   /**
+    * Clears the history stack, removing all recorded changes.
+    */
    public void clearHistory() {
       historyStack.clear();
     }
 
+   /**
+    * Executes a canvas edit operation, recording the change in the history stack and updating the modified flag.
+    *
+    * @param edit the edit operation to perform
+    */
    public void canvasEdit(Runnable edit) {
       historyStack.recordChange();
       edit.run();

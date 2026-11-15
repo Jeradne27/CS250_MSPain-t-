@@ -34,9 +34,7 @@ import javafx.stage.Stage;
  */
 
 // IMPROVEMENTS:
-// - There is a lot of code duplication in the image handling methods. Could refactor to create common utility methods for loading, saving, and displaying images.
-// - The error handling for image loading could be improved to provide user-friendly messages instead of just printing stack traces.
-// - the way images are displayed and scaled could be improved for better user experience.
+// - updated clearModified method to ensure it properly resets the modified state of the file tab.
 
 // ISSUES:
 // - The way that loading errors are handled is simplistic and could be improved for user experience.
@@ -65,17 +63,23 @@ public class ImageFiles {
         this.addImage = addImage;
     }
 
-    // Creates a new image tab with a default name.
+    /**
+     * Creates a new image tab with a default name.
+     */
     public void newImage() {
         addImage.apply("Untitled");
     }
 
-    // Opens an image in the current tab.
+    /**
+     * Opens an image in the current tab.
+     */
     public void openImage() {
         openImage(false);
     }
 
-    // Opens an image in a new tab.
+    /**
+     * Opens an image in a new tab.
+     */
     public void openImageInNewTab() {
         openImage(true);
     }
@@ -83,6 +87,7 @@ public class ImageFiles {
     /**
      * Opens an image file in the current or a new tab.
      * @param newTab Whether to open the image in a new tab.
+     * @return true if the image was opened successfully, false otherwise.
      */
     private void openImage(boolean newTab) {
         FileChooser fileChooser = new FileChooser();
@@ -140,6 +145,9 @@ public class ImageFiles {
         fileTab.clearModified();
     }
 
+    /**
+     * Saves the image in the active file tab to its current file.
+     */
     public void saveImage() { 
         FileTab fileTab = active.get();
         // If there is an active image tab, save it.
@@ -168,6 +176,7 @@ public class ImageFiles {
      * @param fileTab The file tab containing the image to save.
      * @param file The file to save the image to.
      * @return True if the image was saved successfully, false otherwise.
+     * @throws Exception if an error occurs while saving the image.
      */
     public boolean saveImage(FileTab fileTab, File file) {
         double scaleX = fileTab.getDrawingArea().getScaleX();
@@ -226,6 +235,9 @@ public class ImageFiles {
         }
     }
 
+    /**
+     * Prompts the user to save the image in the active file tab as a new file.
+     */
     public void saveImageAs() {
         FileTab fileTab = active.get();
         // If there is an active file tab, prompt to save the image as.
@@ -372,7 +384,9 @@ public class ImageFiles {
         return pick == dontSave;
     }
 
-    
+    /**
+     * Closes the application, prompting the user to save changes for all open file tabs.
+     */
     public void close() {
         // Prompt the user to save changes for all open file tabs before closing the application.
         for (Tab tab : tabPane.getTabs()) {

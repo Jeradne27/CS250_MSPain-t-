@@ -24,16 +24,13 @@ import paint.TopMenuBar.Zoom;
  */
 
 // IMPROVEMENTS:
-// - Add more keyboard shortcuts for frequently used actions.
-// - Improve the layout and organization of the menu items for better user experience.
-// - Add more options for the zoom menu.
+// - Added more keyboard shortcuts for frequently used actions (Open, New Tab, Save, Save As, Close, Reset Zoom, Help, About)
+// - Made some changes to the layout and organization of the menu items for better user experience.
+// - Renamed the "View" menu to "Zoom" for clarity.
 
 // ISSUES: 
 // - The zoom menu currently only has a reset option and lacks keyboard shortcuts for zooming in and out.
-// - The help and about menu items do not have keyboard shortcuts.
-// - The close menu item does not have a keyboard shortcut.
-// - The reset zoom menu item does not have a keyboard shortcut.
-// - The zoom slider doesn't start at the middle position, which is bothersome.
+// - The zoom slider doesn't start at the middle position.
 
 public class MainMenu {
     

@@ -11,11 +11,11 @@ import javafx.stage.Stage;
  */
 
 // IMPROVEMENTS:
-// - The "About" window currently only contains an empty layout.
-// - Consider adding labels or other UI elements to provide information about the application.
+// - N/A
 
 // ISSUES:
 // - The window has no information or content, which will be added towards the end of the project.
+
 public class About {
     /**
      * Displays the "About" window.

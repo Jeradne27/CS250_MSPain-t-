@@ -16,14 +16,11 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Add support for different types of triangles (e.g., equilateral, isosceles).
-// - Add support for drawing triangles with rounded corners.
-// - Add support for drawing triangles with different orientations (e.g., pointing up, down, left, right).
-// - Add a preview of the triangle while the user is dragging the mouse.
+// - Added a preview of the triangle while the user is dragging the mouse.
+// - Supports drawing triangle in different orientations (e.g., pointing up, down, left, right).
 
 // ISSUES:
-// - The current implementation only supports drawing triangles with the base at the bottom.
-// - The triangle is only drawn on mouse release, not during the drag.
+// - There isn't a fill option yet, so setFill and setFillColor methods are currently unused.// - There isn't a fill option yet, so setFill and setFillColor methods are currently unused.
 
 public class Triangles implements Shapes<Triangles> {
     private Canvas canvas;
@@ -49,6 +46,7 @@ public class Triangles implements Shapes<Triangles> {
     private boolean dashed;
 
     private boolean dragging;
+
     /**
      * Constructs a new Triangles tool with the specified canvas.
      *
@@ -60,42 +58,92 @@ public class Triangles implements Shapes<Triangles> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the color of the triangle to be drawn.
+     *
+     * @param color the color to set for the triangle.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Returns the current color of the triangle to be drawn.
+     *
+     * @return the current color of the triangle.
+     */
     public Color getColor() {
         return this.color;
     }
 
+    /**
+     * Sets the width of the triangle to be drawn.
+     *
+     * @param width the width to set for the triangle.
+     */
     public void setWidth(double width) {
         this.width = width;
     }
 
+    /**
+     * Returns the current width of the triangle to be drawn.
+     *
+     * @return the current width of the triangle.
+     */
     public double getWidth() {
         return this.width;
     }
 
+    /**
+     * Sets whether the triangle should be filled.
+     *
+     * @param isFilled true if the triangle should be filled, false otherwise.
+     */
     public void setFilled(boolean isFilled) {
         this.isFilled = isFilled;
     }
 
+    /**
+     * Sets the fill color of the triangle.
+     *
+     * @param fillColor the fill color to set for the triangle.
+     */
     public void setFillColor(Color fillColor) {
         this.fillColor = fillColor;
     }
 
+    /**
+     * Returns the current fill color of the triangle.
+     *
+     * @return the current fill color of the triangle.
+     */
     public Color getFillColor() {
         return this.fillColor;
     }
 
+    /**
+     * Returns whether the triangle is set to be filled.
+     *
+     * @return true if the triangle is set to be filled, false otherwise.
+     */
     public boolean isFilled() {
         return this.isFilled;
     }
 
+    /**
+     * Returns whether the triangle is set to be drawn with a dashed line.
+     *
+     * @return true if the triangle is set to be drawn with a dashed line, false otherwise.
+     */
     public boolean isDashed() {
         return dashed;
     }
 
+    /**
+     * Sets whether the triangle should be drawn with a dashed line.
+     *
+     * @param dashed true if the triangle should be drawn with a dashed line, false otherwise.
+     */
     public void setDashed(boolean dashed) {
         this.dashed = dashed;
     }
@@ -150,13 +198,24 @@ public class Triangles implements Shapes<Triangles> {
         dragging = false;
     }
 
+    /**
+     * Clears the preview of the triangle on the preview canvas.
+     */
     private void clearPreview() {
         previewCanvas.getGraphicsContext2D().clearRect(0, 0, previewCanvas.getWidth(), previewCanvas.getHeight());
     }
 
+    /**
+     * Draws a triangle on the specified target canvas with the given coordinates.
+     *
+     * @param targetCanvas the canvas on which to draw the triangle.
+     * @param x the x-coordinate of the second point of the triangle.
+     * @param y the y-coordinate of the second point of the triangle.
+     */
     private void drawTriangle(Canvas targetCanvas, double x, double y) {
         GraphicsContext gc = targetCanvas.getGraphicsContext2D();
 
+        // Calculate the coordinates of the triangle based on the anchor point and the current mouse position.
         leftX = Math.min(anchorX, x);
         rightX = Math.max(anchorX, x);
         topY = Math.min(anchorY, y);
@@ -185,6 +244,7 @@ public class Triangles implements Shapes<Triangles> {
             gc.setLineDashes();
         }
 
+        // Draw the outline of the triangle.
         gc.strokePolygon(
             new double[]{mid, leftX, rightX},
             new double[]{topY, bottomY, bottomY},

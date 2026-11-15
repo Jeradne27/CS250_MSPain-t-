@@ -19,13 +19,9 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Allow the user to change the fill pattern dynamically while drawing.
-// - Previews before the shape is added to the canvas while dragging the mouse.
-// - There is no menu option to fill the diamond at the moment, though there are setters for fill color and fill status.
+// - Added preview of the diamond while dragging the mouse.
 
 // ISSUES:
-// - The diamond is only drawn on mouse release, not dynamically while dragging.
-// - The dashed line style is applied only on the final stroke, not during the drawing process.
 // - There is no menu option to fill the diamond at the moment, though there are setters for fill color and fill status.
 
 public class Diamonds implements Shapes<Diamonds> {
@@ -64,42 +60,82 @@ public class Diamonds implements Shapes<Diamonds> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the color of the diamond.
+     * @param color The color to use for the diamond.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Gets the color of the diamond.
+     * @return The color of the diamond.
+     */
     public Color getColor() {
         return this.color;
     }
 
+    /**
+     * Sets the width of the diamond's stroke.
+     * @param width The width to use for the diamond's stroke.
+     */
     public void setWidth(double width) {
         this.width = width;
     }
 
+    /**
+     * Gets the width of the diamond's stroke.
+     * @return The width of the diamond's stroke.
+     */
     public double getWidth() {
         return this.width;
     }
 
+    /**
+     * Sets whether the diamond should be filled.
+     * @param isFilled True if the diamond should be filled, false otherwise.
+     */
     public void setFilled(boolean isFilled) {
         this.isFilled = isFilled;
     }
 
+    /**
+     * Sets the fill color of the diamond.
+     * @param fillColor The color to use for filling the diamond.
+     */
     public void setFillColor(Color fillColor) {
         this.fillColor = fillColor;
     }
 
+    /**
+     * Gets the fill color of the diamond.
+     * @return The fill color of the diamond.
+     */
     public Color getFillColor() {
         return this.fillColor;
     }
 
+    /**
+     * Checks if the diamond is filled.
+     * @return True if the diamond is filled, false otherwise.
+     */
     public boolean isFilled() {
         return this.isFilled;
     }
 
+    /**
+     * Sets whether the diamond's stroke should be dashed.
+     * @param dashed True if the diamond's stroke should be dashed, false otherwise.
+     */
     public void setDashed(boolean dashed) {
         this.dashed = dashed;
     }
 
+    /**
+     * Checks if the diamond's stroke is dashed.
+     * @return True if the diamond's stroke is dashed, false otherwise.
+     */
     public boolean isDashed() {
         return dashed;
     }
@@ -152,13 +188,21 @@ public class Diamonds implements Shapes<Diamonds> {
         dragging = false;
     }
 
+    /**
+     * Clears the preview of the diamond being drawn on the preview canvas.
+     */
     private void clearPreview() {
         previewCanvas.getGraphicsContext2D().clearRect(0, 0, previewCanvas.getWidth(), previewCanvas.getHeight());
     }
 
+    /**
+     * Draws a diamond on the target canvas with the specified center and radius.
+     * @param targetCanvas The canvas on which to draw the diamond.
+     * @param x The x-coordinate of the diamond's center.
+     * @param y The y-coordinate of the diamond's center.
+     */
     private void drawDiamond(Canvas targetCanvas, double x, double y) {
         GraphicsContext gc = targetCanvas.getGraphicsContext2D();
-        // Draw the diamond shape here using the GraphicsContext.
 
         leftX = Math.min(anchorX, x);
         rightX = Math.max(anchorX, x);
@@ -181,7 +225,6 @@ public class Diamonds implements Shapes<Diamonds> {
             );
         }
 
-        // Apply the stroke style (dashed or solid) before drawing the outline.
         if (dashed) {
             gc.setLineCap(StrokeLineCap.BUTT);
             gc.setLineDashes(5, 3);

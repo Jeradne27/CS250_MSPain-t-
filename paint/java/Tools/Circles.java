@@ -16,15 +16,9 @@ import javafx.scene.shape.StrokeLineCap;
  */
 
 // IMPROVEMENTS:
-// - Add support for different line styles (e.g., solid, dashed, dotted).
-// - Allow the user to change the line style dynamically while drawing.
-// - Add support for filling the circle with a color.
-// - Add support for different fill patterns (e.g., solid, gradient, pattern).
-// - Allow the user to change the fill pattern dynamically while drawing.
+// - Added live preview of the circle while dragging the mouse.
 
 // ISSUES:
-// - The circle is only drawn on mouse release, not dynamically while dragging.
-// - The dashed line style is applied only on the final stroke, not during the drawing process.
 // - There is no menu option to fill the circle at the moment, though there are setters for fill color and fill status.
 
 public class Circles implements Shapes<Circles> {
@@ -57,42 +51,82 @@ public class Circles implements Shapes<Circles> {
         this.previewCanvas = previewCanvas;
     }
 
+    /**
+     * Sets the color of the circle.
+     * @param color The color to set for the circle.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Gets the color of the circle.
+     * @return The color of the circle.
+     */
     public Color getColor() {
         return this.color;
     }
 
+    /**
+     * Sets the width of the circle's stroke.
+     * @param width The width to set for the circle's stroke.
+     */
     public void setWidth(double width) {
         this.width = width;
     }
 
+    /**
+     * Gets the width of the circle's stroke.
+     * @return The width of the circle's stroke.
+     */
     public double getWidth() {
         return this.width;
     }
 
+    /**
+     * Sets whether the circle should be filled.
+     * @param isFilled True if the circle should be filled, false otherwise.
+     */
     public void setFilled(boolean isFilled) {
         this.isFilled = isFilled;
     }
 
+    /**
+     * Sets the fill color of the circle.
+     * @param fillColor The color to use for filling the circle.
+     */
     public void setFillColor(Color fillColor) {
         this.fillColor = fillColor;
     }
 
+    /**
+     * Gets the fill color of the circle.
+     * @return The fill color of the circle.
+     */
     public Color getFillColor() {
         return this.fillColor;
     }
 
+    /**
+     * Checks if the circle is filled.
+     * @return True if the circle is filled, false otherwise.
+     */
     public boolean isFilled() {
         return this.isFilled;
     }
 
+    /**
+     * Checks if the circle's stroke is dashed.
+     * @return True if the circle's stroke is dashed, false otherwise.
+     */
     public boolean isDashed() {
         return dashed;
     }
 
+    /**
+     * Sets whether the circle's stroke should be dashed.
+     * @param dashed True if the circle's stroke should be dashed, false otherwise.
+     */
     public void setDashed(boolean dashed) {
         this.dashed = dashed;
     }
@@ -148,10 +182,19 @@ public class Circles implements Shapes<Circles> {
         dragging = false;
     }
 
+    /**
+     * Clears the preview of the circle being drawn on the preview canvas.
+     */
     private void clearPreview() {
         previewCanvas.getGraphicsContext2D().clearRect(0, 0, previewCanvas.getWidth(), previewCanvas.getHeight());
     }
 
+    /**
+     * Draws a circle on the target canvas with the specified center and radius.
+     * @param targetCanvas The canvas on which to draw the circle.
+     * @param x The x-coordinate of the circle's center.
+     * @param y The y-coordinate of the circle's center.
+     */
     private void drawCircle(Canvas targetCanvas, double x, double y) {
         GraphicsContext gc = targetCanvas.getGraphicsContext2D();
 
@@ -183,6 +226,7 @@ public class Circles implements Shapes<Circles> {
         gc.strokeOval(anchorX - radius, anchorY - radius, 2 * radius, 2 * radius);
         gc.restore();
     }
+    
     /**
      * Returns the current instance of the circle drawing tool.
      * @return The current instance of the circle drawing tool.

@@ -45,15 +45,13 @@ import paint.Tools.Selection;
  */
 
 // IMPROVEMENTS:
-// - Add keyboard shortcuts for frequently used tools.
-// - Add more options for different types of drawing tools.
-// - Improve the layout of the tool menu for better user experience.
-// - Add a preview of the drawing before it is placed on the canvas.
+// - Added Hearts, Pentagons, Text, and Right Triangles tools.
+// - Added copy, paste, and cut under a new edit menu.
+// - Moved eraser, undo, redo, and clear to into the menubar in order to keep things separated
 
 // ISSUES:
 // - No keyboard shortcuts for tool selection.
-// - When you draw on the canvas, you can't relocate the drawing
-// - There is no preview of the drawing before it is placed on the canvas.
+// - Move the eraser, undo, redo, and clear options somewhere else
 
 public class ToolMenu {
     private final Canvas canvas;
@@ -79,6 +77,7 @@ public class ToolMenu {
     private Text text;
     private Selection selection;
     private StyleMenu styleMenu;
+    private FileTab file;
 
 
     /**
@@ -92,12 +91,14 @@ public class ToolMenu {
      * @param ellipses The ellipses tool.
      * @param triangles The triangles tool.
      * @param diamonds The diamonds tool.
+     * @param hearts The hearts tool.
      * @param pentagons The pentagons tool.
      * @param rightTriangles The right triangles tool.
      * @param text The text tool.
-     * @param hearts The hearts tool.
+     * @param selection The selection tool.
      * @param styleMenu The style menu.
      * @param canvas The canvas to draw on.
+     * @param file The file tab associated with the tool menu.
      */
     public ToolMenu(Lines lines, Pencil pencil, Eraser eraser, Rectangles rectangles, Squares squares, Circles circles, Ellipses ellipses, Triangles triangles, Diamonds diamonds, Hearts hearts, Pentagons pentagons, RightTriangles rightTriangles, Text text, Selection selection, StyleMenu styleMenu, Canvas canvas, FileTab file) {
         this.lines = lines;
@@ -116,20 +117,25 @@ public class ToolMenu {
         this.selection = selection;
         this.styleMenu = styleMenu;
         this.canvas = canvas;
+        this.file = file;
         
         toolBar = new MenuBar();
 
+        // Creates the buttons for eraser, undo, redo, and clear actions.
         Button eraserButton = new Button("Eraser");
         Button undoButton = new Button("Undo");
         Button redoButton = new Button("Redo");
         Button clearButton = new Button("Clear");
 
+        // Sets the action handlers for the buttons.
         undoButton.setOnAction(event -> file.undo());
         redoButton.setOnAction(event -> file.redo());
         clearButton.setOnAction(event -> file.clearCanvas());
 
+        // Creates the horizontal box containing the tool bar and the action buttons.
         toolMenuRow = new HBox(5, toolBar, eraserButton, undoButton, redoButton, clearButton);
 
+        // Creates the draw menu and adds it to the tool bar.
         Menu drawMenu = new Menu("Draw");
         MenuItem lineItem = new MenuItem("Line");
         MenuItem pencilItem = new MenuItem("Pencil");
@@ -141,16 +147,21 @@ public class ToolMenu {
         drawMenu.getItems().add(selectItem);
         toolBar.getMenus().add(drawMenu);
 
+        // Creates the shapes menu and adds it to the tool bar.
         Menu shapeMenu = new Menu("Shapes");
 
+        // Creates the edit menu and adds it to the tool bar.
         Menu editMenu = new Menu("Edit");
 
+        // Creates the menu items for the edit menu.
         MenuItem copyItem = new MenuItem("Copy");
         MenuItem cutItem = new MenuItem("Cut");
         MenuItem pasteItem = new MenuItem("Paste");
 
+        // Adds the menu items to the edit menu.
         editMenu.getItems().addAll(copyItem, cutItem, pasteItem);
 
+        // Creates the menu items for the shapes menu.
         MenuItem rectangleItem = new MenuItem("Rectangle");
         MenuItem squareItem = new MenuItem("Square");
         MenuItem circleItem = new MenuItem("Circle");
@@ -161,6 +172,7 @@ public class ToolMenu {
         MenuItem pentagonItem = new MenuItem("Pentagon");
         MenuItem rightTriangleItem = new MenuItem("Right Triangle");
 
+        // Adds the menu items to the shapes menu.
         shapeMenu.getItems().add(rectangleItem);
         shapeMenu.getItems().add(squareItem);
         shapeMenu.getItems().add(circleItem);
@@ -171,8 +183,10 @@ public class ToolMenu {
         shapeMenu.getItems().add(pentagonItem);
         shapeMenu.getItems().add(rightTriangleItem);
 
+        // Adds the shapes and edit menus to the tool bar.
         toolBar.getMenus().addAll(shapeMenu, editMenu);
 
+        // Sets the action handlers for the draw menu items.
         lineItem.setOnAction(event -> {
             styleMenu.setSelectedTool(lines);
             selectTool(lines, canvas);
@@ -181,11 +195,6 @@ public class ToolMenu {
         pencilItem.setOnAction(event -> {
             styleMenu.setSelectedTool(pencil);
             selectTool(pencil, canvas);
-        });
-
-        eraserButton.setOnAction(event -> {
-            styleMenu.setSelectedTool(eraser);
-            selectTool(eraser, canvas);
         });
 
         textItem.setOnAction(event -> {
@@ -198,18 +207,7 @@ public class ToolMenu {
             selectTool(selection, canvas);
         });
 
-        copyItem.setOnAction(event -> selection.copySelection());
-        copyItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
-
-        cutItem.setOnAction(event -> selection.cutSelection());
-        cutItem.setAccelerator(new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN));
-
-        pasteItem.setOnAction(event -> {
-            selectTool(selection, canvas);
-            selection.pasteSelection();
-        });
-        pasteItem.setAccelerator(new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN));
-        
+        // Sets the action handlers for the shapes menu items.
         rectangleItem.setOnAction(event -> {
             styleMenu.setSelectedTool(rectangles);
             selectTool(rectangles, canvas);
@@ -254,8 +252,33 @@ public class ToolMenu {
             styleMenu.setSelectedTool(rightTriangles);
             selectTool(rightTriangles, canvas);
         });
+
+        // Sets the action handler for the eraser button.
+        eraserButton.setOnAction(event -> {
+            styleMenu.setSelectedTool(eraser);
+            selectTool(eraser, canvas);
+        });
+
+        // Sets the action handlers for the copy, cut, and paste menu items.
+        copyItem.setOnAction(event -> selection.copySelection());
+        copyItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
+
+        cutItem.setOnAction(event -> selection.cutSelection());
+        cutItem.setAccelerator(new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN));
+
+        pasteItem.setOnAction(event -> {
+            selectTool(selection, canvas);
+            selection.pasteSelection();
+        });
+        pasteItem.setAccelerator(new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN));
     }
 
+    /**
+     * Creates a menu item for the given tool.
+     * @param label The label of the menu item.
+     * @param tool The tool associated with the menu item.
+     * @return The created menu item.
+     */
     private MenuItem toolItem(String label, Drawing<?> tool) {
         MenuItem item = new MenuItem(label);
         item.setOnAction(event -> selectTool(tool, canvas));

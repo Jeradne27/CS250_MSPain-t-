@@ -14,6 +14,14 @@ import javafx.scene.paint.Color;
 // ISSUES:
 // - None at the moment.
 
+// Implementeded by:
+// - Lines.java
+// - Pencil.java
+// - Eraser.java
+// - Selection.java
+// - Text.java
+// - Shapes.java (extends)
+
 public interface Drawing<T> {
 
     // Activate and deactivate the drawing tool on the given canvas.

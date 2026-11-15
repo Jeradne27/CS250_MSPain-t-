@@ -14,12 +14,10 @@ import javafx.scene.paint.Color;
  * Class representing the Lines drawing tool.
  */
 // IMPROVEMENTS:
-// - Add support for different line styles (e.g., solid, dashed).
-// - Add a preview of the line while drawing.
-// - Could add support for curves and other advanced line shapes.
+// - Addedd a preview of the line while drawing.
 
 // ISSUES:
-// - The current implementation does not provide a live preview of the line while drawing.
+// - Would like to add support for curved lines
 
 public class Lines implements Drawing<Lines> {
     private Canvas canvas;
@@ -47,26 +45,56 @@ public class Lines implements Drawing<Lines> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the color of the line.
+     *
+     * @param color the color to set for the line.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Returns the current color of the line.
+     *
+     * @return the current color of the line.
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Sets the width of the line.
+     *
+     * @param width the width to set for the line.
+     */
     public void setWidth(double width) {
         this.width = width;
     }
 
+    /**
+     * Returns the current width of the line.
+     *
+     * @return the current width of the line.
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * Returns whether the line is using a dashed stroke.
+     *
+     * @return true if the line is using a dashed stroke, false otherwise.
+     */
     public boolean isDashed() {
         return dashed;
     }
 
+    /**
+     * Sets whether the line should use a dashed stroke.
+     *
+     * @param dashed true if the line should use a dashed stroke, false otherwise.
+     */
     public void setDashed(boolean dashed) {
         this.dashed = dashed;
     }
@@ -114,10 +142,20 @@ public class Lines implements Drawing<Lines> {
         canvas.setOnMouseReleased(null);
     }
 
+    /**
+     * Clears the preview of the line on the preview canvas.
+     */
     private void clearPreview() {
         previewCanvas.getGraphicsContext2D().clearRect(0, 0, previewCanvas.getWidth(), previewCanvas.getHeight());
     }
 
+    /**
+     * Draws a line on the specified canvas from the starting point to the given coordinates.
+     *
+     * @param targetCanvas the canvas on which the line will be drawn.
+     * @param x the x-coordinate of the end point of the line.
+     * @param y the y-coordinate of the end point of the line.
+     */
     private void drawLine(Canvas targetCanvas, double x, double y) {
         GraphicsContext gc = targetCanvas.getGraphicsContext2D();
         
@@ -137,6 +175,7 @@ public class Lines implements Drawing<Lines> {
         
         gc.restore();
     }
+    
     /**
      * Returns the current instance of the Lines drawing tool.
      *

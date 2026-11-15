@@ -28,13 +28,11 @@ import paint.Tools.Drawing;
  */
 
 // IMPROVEMENTS: 
-// - Add keyboard shortcuts for frequently used style options.
-// - Add more options for line styles and patterns.
-// - Change location of the style menu for better user experience. Moving it the the left or right side of the app window.
-// - Dashed line options are currently limited to a checkbox. Could add it to a menu for more line styles.
+// - Moved eraser button from the style menu to the tool menu to keep things consistent
 
 //ISSUES:
 // - No keyboard shortcuts for style options.
+// - Dashed could be expanded to include different dash patterns.
 
 public class StyleMenu {
 
@@ -49,7 +47,6 @@ public class StyleMenu {
     private final Button colorDropper = new Button("Color Dropper");
     private final Slider widthSlider = new Slider(1, 20, 5);
     private final MenuButton widthMenu = new MenuButton("Width"); 
-    // private final Button eraserButton = new Button("Eraser");
     private final CheckBox dashedCheckBox = new CheckBox("Dashed");
 
     /**
@@ -101,32 +98,21 @@ public class StyleMenu {
             widthMenu.hide();
         });
         
+        // Creates the VBox containing the width slider and apply button.
         VBox widthOptions = new VBox(10, widthSlider, applyWidth);
         
+        // Adds padding to the width options container.
         widthOptions.setPadding(new Insets(10));
 
         // Creates the custom menu item for the width options. CustoMenuItem allows the width option to be a port of the app
         // window instead of a separate window like before. 
         CustomMenuItem widthItem = new CustomMenuItem(widthOptions, false);
 
+        // Adds the custom menu item to the width menu.
         widthMenu.getItems().add(widthItem);
 
-        // eraserButton.setOnAction(event -> {
-        //     // Deactivates the currently selected tool before activating the eraser.
-        //     if (selectedTool != null) {
-        //         selectedTool.deactivateTool();
-        //     }
-        //     Eraser eraser  = new Eraser(canvas);
-        //     eraser.activateTool(canvas);
-        // });
-
-        toolbar = new ToolBar(
-            colorPicker,
-            colorDropper,
-            widthMenu,
-            // eraserButton,
-            dashedCheckBox
-        );
+        // Creates the toolbar containing the style menu items.
+        toolbar = new ToolBar(colorPicker, colorDropper, widthMenu, dashedCheckBox);
 
         // Ensures the toolbar is enabled.
         toolbar.setDisable(false); 
@@ -141,10 +127,12 @@ public class StyleMenu {
             selectedTool.deactivateTool();
         }
 
+        // Sets the mouse click handler for the drawing area to pick a color.
         drawingArea.setOnMouseClicked(event -> {
             var snapshot = drawingArea.snapshot(null, null);
             var pixelReader = snapshot.getPixelReader();
             
+            // Gets the pixel reader from the snapshot of the drawing area.
             int x = (int) event.getX();
             int y = (int) event.getY();
             

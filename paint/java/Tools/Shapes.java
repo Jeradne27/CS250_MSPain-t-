@@ -13,10 +13,22 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Add a live preview of the shape while drawing.
+// - N/A
 
 // ISSUES:
-// - The current implementation does not provide a live preview of the shape while drawing.
+// - N/A
+
+// Implemented by:
+// - Circles.java
+// - Diamonds.java
+// - Ellipses.java
+// - Hearts.java
+// - Pentagons.java
+// - Rectangles.java
+// - RightTriangles.java
+// - Squares.java
+// - Triangles.java
+
 public interface Shapes<T> extends Drawing<T> {
     // Methods related to the shape's fill and stroke properties.
     void setFilled(boolean filled);

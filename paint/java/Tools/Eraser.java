@@ -9,14 +9,12 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Add support for different eraser sizes.
-// - Add a preview of the eraser while drawing.
-// - could add support for erasing shapes and pieces on the canvas.
+// - N/A
 
 // ISSUES:
 // - The current implementation does not provide a live preview of the eraser while drawing.
 // - The current implementation only erases a small area around the mouse pointer.
-// - Width controls don't affect the eraser since it only clears the area.
+// - Width controls don't affect the eraser since it only clears the area, though there are still methods to set and get the width.
 
 public class Eraser implements Drawing<Eraser> {
     private Canvas canvas;
@@ -80,34 +78,65 @@ public class Eraser implements Drawing<Eraser> {
         canvas.setOnMouseReleased(null);
     }
 
-    // Returns the current instance of the Eraser drawing tool.
+    /**
+     * Returns the current instance of the Eraser drawing tool.
+     *
+     * @return the current instance of the Eraser drawing tool.
+     */
     public Eraser getTool() {
         return this;
     }
 
-    // Sets the color of the eraser.
-    // Color doesn't affect the eraser since it only clears the area.
+    /**
+     * Sets the color of the eraser.
+     * Color doesn't affect the eraser since it only clears the area.
+     *
+     * @param color the color to set for the eraser.
+     */
     public void setColor(Color color) {}
 
-    // Returns the current color of the eraser.
+    /**
+     * Returns the current color of the eraser.
+     * Color doesn't affect the eraser since it only clears the area.
+     *
+     * @return the current color of the eraser.
+     */
     public Color getColor() {
         return Color.TRANSPARENT;
     }
 
+    /**
+     * Sets the width of the eraser.
+     *
+     * @param width the width to set for the eraser.
+     */
     public void setWidth(double width) {
         this.size = width;
     }
 
+    /**
+     * Returns the current width of the eraser.
+     *
+     * @return the current width of the eraser.
+     */
     public double getWidth() {
         return size;
     }
 
-    // Sets whether the eraser should use a dashed stroke.
-    // Dashed stroke doesn't affect the eraser since it only clears the area.
+    /**
+     * Sets whether the eraser should use a dashed stroke.
+     * Dashed stroke doesn't affect the eraser since it only clears the area.
+     *
+     * @param dashed true if the eraser should use a dashed stroke, false otherwise.
+     */
     public void setDashed(boolean dashed) {}
 
-    // Returns whether the eraser is using a dashed stroke.
-    // Dashed stroke doesn't affect the eraser since it only clears the area.
+    /**
+     * Returns whether the eraser is using a dashed stroke.
+     * Dashed stroke doesn't affect the eraser since it only clears the area.
+     *
+     * @return true if the eraser is using a dashed stroke, false otherwise.
+     */
     public boolean isDashed() {
         return false;
     }

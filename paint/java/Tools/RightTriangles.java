@@ -10,6 +10,17 @@ import javafx.scene.shape.Polygon;
 
 import javafx.scene.paint.Color;
 
+/**
+ * A tool for drawing right triangles on a canvas.
+ */
+
+// IMPROVEMENTS:
+// - Newest shape in the shape menu
+// - Supports different orientations of the right triangle
+
+// ISSUES:
+// - Since there is no fill menu yet, the fill color cannot be changed yet.
+
 public class RightTriangles implements Shapes<RightTriangles> {
     private Canvas canvas;
     private Canvas previewCanvas;
@@ -28,52 +39,113 @@ public class RightTriangles implements Shapes<RightTriangles> {
 
     private boolean dragging;
 
+    /**
+     * Constructs a new RightTriangles tool with the specified canvas and preview canvas.
+     *
+     * @param canvas the main canvas on which the right triangles will be drawn.
+     * @param previewCanvas the preview canvas on which the right triangles will be previewed.
+     */
     public RightTriangles(Canvas canvas, Canvas previewCanvas) {
         this.canvas = canvas;
         this.previewCanvas = previewCanvas;
         this.gc = canvas.getGraphicsContext2D();
     }
     
+    /**
+     * Sets the stroke color of the right triangle.
+     *
+     * @param color the color to set for the right triangle's stroke.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Returns the stroke color of the right triangle.
+     *
+     * @return the stroke color of the right triangle.
+     */
     public Color getColor() {
         return this.color;
     }
 
+    /**
+     * Sets the width of the right triangle's stroke.
+     *
+     * @param width the width to set for the right triangle's stroke.
+     */
     public void setWidth(double width) {
         this.width = width;
     }
 
+    /**
+     * Returns the width of the right triangle's stroke.
+     *
+     * @return the width of the right triangle's stroke.
+     */
     public double getWidth() {
         return this.width;
     }
 
+    /**
+     * Sets whether the right triangle should be filled.
+     *
+     * @param isFilled true if the right triangle should be filled, false otherwise.
+     */
     public void setFilled(boolean isFilled) {
         this.isFilled = isFilled;
     }
 
+    /**
+     * Sets the fill color of the right triangle.
+     *
+     * @param fillColor the color to set for the right triangle's fill.
+     */
     public void setFillColor(Color fillColor) {
         this.fillColor = fillColor;
     }
 
+    /**
+     * Returns the fill color of the right triangle.
+     *
+     * @return the fill color of the right triangle.
+     */
     public Color getFillColor() {
         return this.fillColor;
     }
 
+    /**
+     * Returns whether the right triangle is filled.
+     *
+     * @return true if the right triangle is filled, false otherwise.
+     */
     public boolean isFilled() {
         return this.isFilled;
     }
 
+    /**
+     * Returns whether the right triangle is using a dashed stroke.
+     *
+     * @return true if the right triangle is using a dashed stroke, false otherwise.
+     */
     public boolean isDashed() {
         return dashed;
     }
 
+    /**
+     * Sets whether the right triangle should use a dashed stroke.
+     *
+     * @param dashed true if the right triangle should use a dashed stroke, false otherwise.
+     */
     public void setDashed(boolean dashed) {
         this.dashed = dashed;
     }
 
+    /**
+     * Activates the right triangle tool on the specified canvas.
+     *
+     * @param canvas the canvas on which the right triangle tool will be active.
+     */
     public void activateTool(Canvas canvas) {
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
@@ -105,6 +177,9 @@ public class RightTriangles implements Shapes<RightTriangles> {
         });
     }
 
+    /**
+     * Deactivates the right triangle tool on the currently active canvas.
+     */
     public void deactivateTool() {
         canvas.setOnMousePressed(null);
         canvas.setOnMouseDragged(null);
@@ -113,13 +188,24 @@ public class RightTriangles implements Shapes<RightTriangles> {
         dragging = false;
     }
 
+    /**
+     * Clears the preview of the right triangle on the preview canvas.
+     */
     private void clearPreview() {
         previewCanvas.getGraphicsContext2D().clearRect(0, 0, previewCanvas.getWidth(), previewCanvas.getHeight());
     }
 
+    /**
+     * Draws a right triangle on the specified target canvas.
+     *
+     * @param targetCanvas the canvas on which to draw the right triangle.
+     * @param x the x-coordinate of the third vertex of the right triangle.
+     * @param y the y-coordinate of the third vertex of the right triangle.
+     */
     private void drawRightTriangle(Canvas targetCanvas, double x, double y) {
         GraphicsContext gc = targetCanvas.getGraphicsContext2D();
 
+        // Define the vertices of the right triangle based on the anchor point and the third vertex.
         double[] xPoints = {anchorX, x, anchorX};
         double[] yPoints = {anchorY, y, y};
 
@@ -144,11 +230,18 @@ public class RightTriangles implements Shapes<RightTriangles> {
             gc.setLineCap(StrokeLineCap.SQUARE);
             gc.setLineDashes();
         }
+
+        // Draw the outline of the right triangle.
         gc.strokePolygon(xPoints, yPoints, 3);
 
         gc.restore();
     }
 
+    /**
+     * Returns the current instance of the right triangle tool.
+     *
+     * @return the current instance of the right triangle tool.
+     */
     public RightTriangles getTool() {
         return this;
     }

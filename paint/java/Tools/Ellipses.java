@@ -15,13 +15,11 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Add support for different line styles (e.g., solid, dashed, dotted).
-// - Add support for different fill styles (e.g., solid, gradient, pattern).
-// - Add a preview of the ellipse while drawing.
+// - Added a preview of the ellipse while drawing.
 
 
 // ISSUES:
-// - The current implementation does not provide a live preview of the ellipse while drawing.
+// - Fill is not currently supported, though the setFilled and setFillColor methods are provided for future implementation.
 
 public class Ellipses implements Shapes<Ellipses> {
     private Canvas canvas;
@@ -52,42 +50,92 @@ public class Ellipses implements Shapes<Ellipses> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the color of the ellipse's stroke.
+     *
+     * @param color the color to set for the ellipse's stroke.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Returns the color of the ellipse's stroke.
+     *
+     * @return the color of the ellipse's stroke.
+     */
     public Color getColor() {
         return this.color;
     }
 
+    /**
+     * Sets the width of the ellipse's stroke.
+     *
+     * @param width the width to set for the ellipse's stroke.
+     */
     public void setWidth(double width) {
         this.width = width;
     }
 
+    /**
+     * Returns the width of the ellipse's stroke.
+     *
+     * @return the width of the ellipse's stroke.
+     */
     public double getWidth() {
         return this.width;
     }
 
+    /**
+     * Sets whether the ellipse should be filled.
+     *
+     * @param isFilled true if the ellipse should be filled, false otherwise.
+     */
     public void setFilled(boolean isFilled) {
         this.isFilled = isFilled;
     }
 
+    /**
+     * Sets the fill color of the ellipse.
+     *
+     * @param fillColor the color to set for the ellipse's fill.
+     */
     public void setFillColor(Color fillColor) {
         this.fillColor = fillColor;
     }
 
+    /**
+     * Returns the fill color of the ellipse.
+     *
+     * @return the fill color of the ellipse.
+     */
     public Color getFillColor() {
         return this.fillColor;
     }
 
+    /**
+     * Returns whether the ellipse should be filled.
+     *
+     * @return true if the ellipse should be filled, false otherwise.
+     */
     public boolean isFilled() {
         return this.isFilled;
     }
 
+    /**
+     * Returns whether the ellipse's stroke should be dashed.
+     *
+     * @return true if the ellipse's stroke should be dashed, false otherwise.
+     */
     public boolean isDashed() {
         return dashed;
     }
 
+    /**
+     * Sets whether the ellipse's stroke should be dashed.
+     *
+     * @param dashed true if the ellipse's stroke should be dashed, false otherwise.
+     */
     public void setDashed(boolean dashed) {
         this.dashed = dashed;
     }
@@ -144,10 +192,20 @@ public class Ellipses implements Shapes<Ellipses> {
         dragging = false;
     }
 
+    /**
+     * Clears the preview of the ellipse being drawn on the preview canvas.
+     */
     private void clearPreview() {
         previewCanvas.getGraphicsContext2D().clearRect(0, 0, previewCanvas.getWidth(), previewCanvas.getHeight());
     }
 
+    /**
+     * Draws an ellipse on the target canvas with the specified coordinates.
+     *
+     * @param targetCanvas the canvas on which the ellipse will be drawn.
+     * @param x the x-coordinate of the ellipse's center.
+     * @param y the y-coordinate of the ellipse's center.
+     */
     private void drawEllipse(Canvas targetCanvas, double x, double y) {
         GraphicsContext gc = targetCanvas.getGraphicsContext2D();
 

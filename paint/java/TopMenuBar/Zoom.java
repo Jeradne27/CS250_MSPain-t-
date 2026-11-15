@@ -21,12 +21,12 @@ import paint.Operations.FileTab;
 /**
  * Represents the "Zoom" functionality in the paint application.
  */
+
 // IMPROVEMENTS:
-// - The zoom functionality currently only adjusts the scale of the drawing area.
-// - Consider adding options to zoom in/out by fixed increments or to fit the drawing area to the window.
+// - Renamed on the app screen as "View" for clarity
 
 // ISSUES:
-// - The zoom slider only affects the active file tab, and if no file tab is active, the zoom option is disabled.
+// - N/A
 
 public class Zoom{
 

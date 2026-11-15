@@ -16,10 +16,11 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Add a live preview of the square while drawing.
+// - Added a live preview of the square while drawing.
 
 // ISSUES:
-// - The current implementation does not provide a live preview of the square while drawing.
+// - There isn't a fill option yet, so setFill and setFillColor methods are currently unused.
+
 public class Squares implements Shapes<Squares> {
     private Canvas canvas;
     private GraphicsContext gc;
@@ -49,42 +50,92 @@ public class Squares implements Shapes<Squares> {
         this.previewCanvas = previewCanvas;
     }
 
+    /**
+     * Sets the color of the square drawing tool.
+     *
+     * @param color the color to set for the square drawing tool.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Gets the color of the square drawing tool.
+     *
+     * @return the color of the square drawing tool.
+     */
     public Color getColor() {
         return this.color;
     }
 
+    /**
+     * Sets the width of the square drawing tool.
+     *
+     * @param width the width to set for the square drawing tool.
+     */
     public void setWidth(double width) {
         this.width = width;
     }
 
+    /**
+     * Gets the width of the square drawing tool.
+     *
+     * @return the width of the square drawing tool.
+     */
     public double getWidth() {
         return this.width;
     }
 
+    /**
+     * Sets the fill status of the square drawing tool.
+     *
+     * @param isFilled true if the square should be filled, false otherwise.
+     */
     public void setFilled(boolean isFilled) {
         this.isFilled = isFilled;
     }
 
+    /**
+     * Sets the fill color of the square drawing tool.
+     *
+     * @param fillColor the fill color to set for the square drawing tool.
+     */
     public void setFillColor(Color fillColor) {
         this.fillColor = fillColor;
     }
 
+    /**
+     * Gets the fill color of the square drawing tool.
+     *
+     * @return the fill color of the square drawing tool.
+     */
     public Color getFillColor() {
         return this.fillColor;
     }
 
+    /**
+     * Checks if the square drawing tool is filled.
+     *
+     * @return true if the square drawing tool is filled, false otherwise.
+     */
     public boolean isFilled() {
         return this.isFilled;
     }
 
+    /**
+     * Checks if the square drawing tool is dashed.
+     *
+     * @return true if the square drawing tool is dashed, false otherwise.
+     */
     public boolean isDashed() {
         return dashed;
     }
 
+    /**
+     * Sets the dashed status of the square drawing tool.
+     *
+     * @param dashed true if the square should be dashed, false otherwise.
+     */
     public void setDashed(boolean dashed) {
         this.dashed = dashed;
     }
@@ -142,17 +193,27 @@ public class Squares implements Shapes<Squares> {
         dragging = false;
     }
 
+    /**
+     * Clears the preview of the square being drawn.
+     */
     private void clearPreview() {
         previewCanvas.getGraphicsContext2D().clearRect(0, 0, previewCanvas.getWidth(), previewCanvas.getHeight());
     }
 
+    /**
+     * Draws a square on the target canvas at the specified coordinates.
+     *
+     * @param targetCanvas the canvas on which the square will be drawn.
+     * @param x the x-coordinate of the square's top-left corner.
+     * @param y the y-coordinate of the square's top-left corner.
+     */
     private void drawSquare(Canvas targetCanvas, double x, double y) {
         GraphicsContext gc = targetCanvas.getGraphicsContext2D();
 
+        // Calculate the top-left corner and side length of the square based on the anchor and current mouse position.
         double l = Math.min(anchorX, x);
         double w = Math.min(anchorY, y);
         double sides = Math.abs(x - anchorX);
-        // Calculate the side length of the square based on the mouse drag distance.
 
         gc.save();
         
@@ -171,6 +232,8 @@ public class Squares implements Shapes<Squares> {
             gc.setFill(fillColor);
             gc.fillRect(l, w, sides, sides);
         }
+
+        // Draw the square outline on the target canvas.
         gc.strokeRect(l, w, sides, sides);
         gc.restore();
     }

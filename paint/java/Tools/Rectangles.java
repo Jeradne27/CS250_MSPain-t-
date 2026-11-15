@@ -15,10 +15,10 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Add a live preview of the rectangle while drawing.
+// - Added a live preview of the rectangle while drawing.
 
 // ISSUES:
-// - The current implementation does not provide a live preview of the rectangle while drawing.
+// - There isn't a fill option yet, so setFill and setFillColor methods are currently unused.
 
 public class Rectangles implements Shapes<Rectangles> {
     private Canvas canvas;
@@ -49,42 +49,92 @@ public class Rectangles implements Shapes<Rectangles> {
         this.previewCanvas = previewCanvas;
     }
 
+    /**
+     * Sets the color of the rectangle's stroke.
+     *
+     * @param color the color to set for the rectangle's stroke.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Returns the color of the rectangle's stroke.
+     *
+     * @return the color of the rectangle's stroke.
+     */
     public Color getColor() {
         return this.color;
     }
 
+    /**
+     * Sets the width of the rectangle's stroke.
+     *
+     * @param width the width to set for the rectangle's stroke.
+     */
     public void setWidth(double width) {
         this.width = width;
     }
 
+    /**
+     * Returns the width of the rectangle's stroke.
+     *
+     * @return the width of the rectangle's stroke.
+     */
     public double getWidth() {
         return this.width;
     }
 
+    /**
+     * Sets whether the rectangle should be filled.
+     *
+     * @param isFilled true if the rectangle should be filled, false otherwise.
+     */
     public void setFilled(boolean isFilled) {
         this.isFilled = isFilled;
     }
 
+    /**
+     * Sets the fill color of the rectangle.
+     *
+     * @param fillColor the color to set for the rectangle's fill.
+     */
     public void setFillColor(Color fillColor) {
         this.fillColor = fillColor;
     }
 
+    /**
+     * Returns the fill color of the rectangle.
+     *
+     * @return the fill color of the rectangle.
+     */
     public Color getFillColor() {
         return this.fillColor;
     }
 
+    /**
+     * Returns whether the rectangle is filled.
+     *
+     * @return true if the rectangle is filled, false otherwise.
+     */
     public boolean isFilled() {
         return this.isFilled;
     }
 
+    /**
+     * Returns whether the rectangle is using a dashed stroke.
+     *
+     * @return true if the rectangle is using a dashed stroke, false otherwise.
+     */
     public boolean isDashed() {
         return dashed;
     }
 
+    /**
+     * Sets whether the rectangle should use a dashed stroke.
+     *
+     * @param dashed true if the rectangle should use a dashed stroke, false otherwise.
+     */
     public void setDashed(boolean dashed) {
         this.dashed = dashed;
     }
@@ -140,10 +190,20 @@ public class Rectangles implements Shapes<Rectangles> {
         dragging = false;
     }
 
+    /**
+     * Clears the preview of the rectangle on the preview canvas.
+     */
     private void clearPreview() {
         previewCanvas.getGraphicsContext2D().clearRect(0, 0, previewCanvas.getWidth(), previewCanvas.getHeight());
     }
 
+    /**
+     * Draws a rectangle on the specified canvas at the given coordinates.
+     *
+     * @param targetCanvas the canvas on which to draw the rectangle.
+     * @param x the x-coordinate of the mouse pointer.
+     * @param y the y-coordinate of the mouse pointer.
+     */
     private void drawRectangle(Canvas targetCanvas, double x, double y) {
         GraphicsContext gc = targetCanvas.getGraphicsContext2D();
 

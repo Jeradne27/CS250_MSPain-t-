@@ -9,6 +9,17 @@ import javafx.scene.paint.Color;
 
 import javafx.scene.shape.StrokeLineCap;
 
+/**
+ * Class representing the Pentagons drawing tool.
+ */
+
+// IMPROVEMENTS:
+// - Newest shape to the shape menu
+// - Added a live preview of the pentagon while drawing.
+
+// ISSUES:
+// - Some weird stuff happens when you drag the mouse backwards while drawing the pentagon, hope to get to the bottom of that later
+
 public class Pentagons implements Shapes<Pentagons> {
 
     private Canvas canvas;
@@ -29,52 +40,113 @@ public class Pentagons implements Shapes<Pentagons> {
 
     private boolean dragging;
     
+    /**
+     * Constructs a Pentagons drawing tool with the given canvas and preview canvas.
+     *
+     * @param canvas the main canvas on which the pentagon will be drawn.
+     * @param previewCanvas the preview canvas on which the live preview of the pentagon will be drawn.
+     */
     public Pentagons(Canvas canvas, Canvas previewCanvas) {
         this.canvas = canvas;
         this.previewCanvas = previewCanvas;
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the color of the pentagon.
+     *
+     * @param color the color to set for the pentagon.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Returns the current color of the pentagon.
+     *
+     * @return the current color of the pentagon.
+     */
     public Color getColor() {
         return this.color;
     }
 
+    /**
+     * Sets the width of the pentagon.
+     *
+     * @param width the width to set for the pentagon.
+     */
     public void setWidth(double width) {
         this.width = width;
     }
 
+    /**
+     * Returns the current width of the pentagon.
+     *
+     * @return the current width of the pentagon.
+     */
     public double getWidth() {
         return this.width;
     }
 
+    /**
+     * Sets whether the pentagon should be filled.
+     *
+     * @param isFilled true if the pentagon should be filled, false otherwise.
+     */
     public void setFilled(boolean isFilled) {
         this.isFilled = isFilled;
     }
 
+    /**
+     * Sets the fill color of the pentagon.
+     *
+     * @param fillColor the fill color to set for the pentagon.
+     */
     public void setFillColor(Color fillColor) {
         this.fillColor = fillColor;
     }
 
+    /**
+     * Returns the current fill color of the pentagon.
+     *
+     * @return the current fill color of the pentagon.
+     */
     public Color getFillColor() {
         return this.fillColor;
     }
 
+    /**
+     * Returns whether the pentagon is filled.
+     *
+     * @return true if the pentagon is filled, false otherwise.
+     */
     public boolean isFilled() {
         return this.isFilled;
     }
 
+    /**
+     * Returns whether the pentagon is using a dashed stroke.
+     *
+     * @return true if the pentagon is using a dashed stroke, false otherwise.
+     */
     public boolean isDashed() {
         return dashed;
     }
 
+    /**
+     * Sets whether the pentagon should use a dashed stroke.
+     *
+     * @param dashed true if the pentagon should use a dashed stroke, false otherwise.
+     */
     public void setDashed(boolean dashed) {
         this.dashed = dashed;
     }
 
+    /**
+     * Activates the Pentagons drawing tool on the given canvas.
+     *
+     * @param canvas the canvas on which the pentagon will be drawn.
+     */
     public void activateTool(Canvas canvas) {
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
@@ -106,6 +178,9 @@ public class Pentagons implements Shapes<Pentagons> {
         });
     }
 
+    /**
+     * Deactivates the Pentagons drawing tool.
+     */
     public void deactivateTool() {
         canvas.setOnMousePressed(null);
         canvas.setOnMouseDragged(null);
@@ -114,10 +189,20 @@ public class Pentagons implements Shapes<Pentagons> {
         dragging = false;
     }
 
+    /**
+     * Clears the preview of the pentagon on the preview canvas.
+     */
     private void clearPreview() {
         previewCanvas.getGraphicsContext2D().clearRect(0, 0, previewCanvas.getWidth(), previewCanvas.getHeight());
     }
 
+    /**
+     * Draws a pentagon on the specified canvas at the given coordinates.
+     *
+     * @param targetCanvas the canvas on which to draw the pentagon.
+     * @param x the x-coordinate of the mouse pointer.
+     * @param y the y-coordinate of the mouse pointer.
+     */
     private void drawPentagon(Canvas targetCanvas, double x, double y) {
         GraphicsContext gc = targetCanvas.getGraphicsContext2D();
 
@@ -125,9 +210,11 @@ public class Pentagons implements Shapes<Pentagons> {
 
         gc.save();
 
+        // Initialize the arrays to hold the x and y coordinates of the pentagon's vertices.
         double[] xPoints = new double[5];
         double[] yPoints = new double[5];
 
+        // Calculate the vertices of the pentagon based on the anchor point and radius.
         for (int i = 0; i < 5; i++) {
             double angle = (2 * Math.PI * i / 5.0) - (Math.PI / 2.0);
             
@@ -155,6 +242,11 @@ public class Pentagons implements Shapes<Pentagons> {
         gc.restore();
     }
 
+    /**
+     * Returns the current instance of the Pentagons tool.
+     *
+     * @return the current instance of the Pentagons tool.
+     */
     public Pentagons getTool() {
         return this;
     }

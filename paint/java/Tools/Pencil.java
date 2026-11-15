@@ -10,12 +10,13 @@ import javafx.scene.paint.Color;
 /**
  * Class representing the Pencil drawing tool.
  */
+
 // IMPROVEMENTS:
-// - Add a preview of the pencil while drawing.
-// - The pencil is a bit choppy when drawing quickly, which could be improved. 
+// - Added a preview of the pencil while drawing.
+// - Improved the smoothness of the pencil
 
 // ISSUES:
-// - The current implementation does not provide a live preview of the pencil while drawing.
+// - The pencil is still slightly choppy when drawing quickly, but it has improved from the first version
 
 public class Pencil implements Drawing<Pencil> {
     private Canvas canvas;
@@ -36,29 +37,60 @@ public class Pencil implements Drawing<Pencil> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the color of the pencil.
+     *
+     * @param color the color to set for the pencil.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Returns the current color of the pencil.
+     *
+     * @return the current color of the pencil.
+     */
     public Color getColor() {   
         return color;
     }
 
+    /**
+     * Sets the width of the pencil.
+     *
+     * @param width the width to set for the pencil.
+     */
     public void setWidth(double width) {
         this.width = width;
     }
 
+    /**
+     * Returns the current width of the pencil.
+     *
+     * @return the current width of the pencil.
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * Returns whether the pencil is using a dashed stroke.
+     *
+     * @return true if the pencil is using a dashed stroke, false otherwise.
+     */
     public boolean isDashed() {
         return dashed;
     }
 
+    /**
+     * Sets whether the pencil should use a dashed stroke.
+     *
+     * @param dashed true if the pencil should use a dashed stroke, false otherwise.
+     */
     public void setDashed(boolean dashed) {
         this.dashed = dashed;
     }
+
     /**
      * Activates the Pencil drawing tool on the given canvas.
      *
@@ -67,7 +99,9 @@ public class Pencil implements Drawing<Pencil> {
     public void activateTool(Canvas canvas) {
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
+
         gc.setStroke(color);
+        
         // Handle mouse dragged event to draw with the pencil.
         canvas.setOnMouseDragged(event -> {
             gc.beginPath();
@@ -86,7 +120,6 @@ public class Pencil implements Drawing<Pencil> {
      * This should be called when the tool is no longer needed or when switching to a different tool.
      */
     public void deactivateTool() {
-        // Clear any active mouse event handlers on the canvas.
         canvas.setOnMouseDragged(null);
     }
 
