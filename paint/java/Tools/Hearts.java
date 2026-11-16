@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -40,6 +42,8 @@ public class Hearts implements Shapes<Hearts> {
     private boolean dashed;
 
     private boolean dragging;
+
+    private Consumer<String> canvasLogger = action -> {};
     
     /**
      * Constructs a Hearts drawing tool with the given canvas and preview canvas.
@@ -51,6 +55,10 @@ public class Hearts implements Shapes<Hearts> {
         this.canvas = canvas;
         this.previewCanvas = previewCanvas;
         this.gc = canvas.getGraphicsContext2D();
+    }
+
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
     }
 
     /**
@@ -156,6 +164,8 @@ public class Hearts implements Shapes<Hearts> {
             anchorX = event.getX();
             anchorY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Heart drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {

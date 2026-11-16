@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -39,6 +41,8 @@ public class Squares implements Shapes<Squares> {
     
     private boolean dashed;
 
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs a Squares drawing tool with the given canvas.
      *
@@ -50,6 +54,10 @@ public class Squares implements Shapes<Squares> {
         this.previewCanvas = previewCanvas;
     }
 
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
+    }
+    
     /**
      * Sets the color of the square drawing tool.
      *
@@ -153,6 +161,8 @@ public class Squares implements Shapes<Squares> {
             anchorX = event.getX();
             anchorY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Square drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {

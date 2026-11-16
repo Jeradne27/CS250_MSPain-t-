@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -39,6 +41,8 @@ public class Ellipses implements Shapes<Ellipses> {
 
     private boolean dragging;
 
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs an Ellipses drawing tool with the given canvas.
      *
@@ -50,6 +54,10 @@ public class Ellipses implements Shapes<Ellipses> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
+    }
+    
     /**
      * Sets the color of the ellipse's stroke.
      *
@@ -153,6 +161,8 @@ public class Ellipses implements Shapes<Ellipses> {
             anchorX = event.getX();
             anchorY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Ellipse drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {
@@ -230,6 +240,7 @@ public class Ellipses implements Shapes<Ellipses> {
             gc.fillOval(anchorX, anchorY, radiusX * 2, radiusY * 2);
         }
         gc.strokeOval(anchorX, anchorY, radiusX * 2, radiusY * 2);
+
         gc.restore();
     }
 

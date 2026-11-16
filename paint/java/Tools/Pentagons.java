@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -39,6 +41,9 @@ public class Pentagons implements Shapes<Pentagons> {
     private boolean dashed;
 
     private boolean dragging;
+
+    private Consumer<String> canvasLogger = action -> {};
+
     
     /**
      * Constructs a Pentagons drawing tool with the given canvas and preview canvas.
@@ -50,6 +55,10 @@ public class Pentagons implements Shapes<Pentagons> {
         this.canvas = canvas;
         this.previewCanvas = previewCanvas;
         this.gc = canvas.getGraphicsContext2D();
+    }
+
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
     }
 
     /**
@@ -155,6 +164,8 @@ public class Pentagons implements Shapes<Pentagons> {
             anchorX = event.getX();
             anchorY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Pentagon drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {

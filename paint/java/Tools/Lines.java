@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.canvas.Canvas;
@@ -34,6 +36,8 @@ public class Lines implements Drawing<Lines> {
 
     private boolean dragging;
 
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs a Lines drawing tool with the given canvas.
      *
@@ -43,6 +47,10 @@ public class Lines implements Drawing<Lines> {
         this.canvas = canvas;
         this.previewCanvas = previewCanvas;
         this.gc = canvas.getGraphicsContext2D();
+    }
+
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
     }
 
     /**
@@ -113,6 +121,8 @@ public class Lines implements Drawing<Lines> {
             startingX = event.getX();
             startingY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Line drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {

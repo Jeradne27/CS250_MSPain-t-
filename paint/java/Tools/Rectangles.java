@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -38,6 +40,8 @@ public class Rectangles implements Shapes<Rectangles> {
 
     private boolean dashed;
 
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs a Rectangles drawing tool with the given canvas.
      *
@@ -47,6 +51,10 @@ public class Rectangles implements Shapes<Rectangles> {
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
         this.previewCanvas = previewCanvas;
+    }
+
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
     }
 
     /**
@@ -152,6 +160,8 @@ public class Rectangles implements Shapes<Rectangles> {
             anchorX = event.getX();
             anchorY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Rectangle drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {

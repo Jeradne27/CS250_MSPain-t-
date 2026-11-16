@@ -1,6 +1,9 @@
 package paint.Operations;
 
+import java.util.UUID;
+
 import java.io.File;
+import java.time.LocalDateTime;
 
 import javafx.scene.canvas.Canvas;
 
@@ -57,6 +60,16 @@ public class FileTab {
    // The toolMenu and styleMenu are associated with this specific file tab.
    private ToolMenu toolMenu;
    private StyleMenu styleMenu;
+
+   private UUID recoveryID = UUID.randomUUID();
+
+   public UUID getRecoveryID() {
+      return recoveryID;
+   }
+
+   public void resetRecoveryID() {
+      recoveryID = UUID.randomUUID();
+   }
 
    /**
     * Constructs a new FileTab with the given title.
@@ -286,9 +299,17 @@ public class FileTab {
     *
     * @param edit the edit operation to perform
     */
-   public void canvasEdit(Runnable edit) {
+   public void canvasEdit(String action, Runnable edit) {
       historyStack.recordChange();
       edit.run();
       setModified(true);  
+      logCanvasAction(action);  
    }
+
+   public void logCanvasAction(String event) {
+        LocalDateTime now = LocalDateTime.now();
+        String fileName = getFile() == null ? title : getFile().getName();
+
+        System.out.printf("%tF %<tT ~ [%s]: %s ~ %s%n", now, "Canvas", event, Thread.currentThread().getName());
+    }
 }

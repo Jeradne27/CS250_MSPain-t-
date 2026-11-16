@@ -1,5 +1,7 @@
 package paint.TopMenuBar;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.layout.VBox;
 
 import javafx.scene.Scene;
