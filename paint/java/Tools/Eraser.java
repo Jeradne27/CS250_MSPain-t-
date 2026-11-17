@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -22,6 +24,8 @@ public class Eraser implements Drawing<Eraser> {
 
     private double size = 10;
 
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs an Eraser drawing tool with the given canvas.
      *
@@ -29,6 +33,15 @@ public class Eraser implements Drawing<Eraser> {
      */
     public Eraser(Canvas canvas) {
         this.canvas = canvas;
+    }
+
+    /**
+     * sets the logger for the canvas
+     * 
+     * @param canvasLogger
+     */
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
     }
 
     /**
@@ -49,6 +62,7 @@ public class Eraser implements Drawing<Eraser> {
                 size,
                 size
             );
+            canvasLogger.accept("Eraser used on canvas");
         });
 
         // Handle mouse dragged event to continue erasing.

@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -14,8 +16,7 @@ import javafx.scene.shape.StrokeLineCap;
  */
 
 // IMPROVEMENTS:
-// - Newest shape to the shape menu
-// - Added a live preview of the pentagon while drawing.
+// - Added a handler for thread logging
 
 // ISSUES:
 // - Some weird stuff happens when you drag the mouse backwards while drawing the pentagon, hope to get to the bottom of that later
@@ -39,6 +40,9 @@ public class Pentagons implements Shapes<Pentagons> {
     private boolean dashed;
 
     private boolean dragging;
+
+    private Consumer<String> canvasLogger = action -> {};
+
     
     /**
      * Constructs a Pentagons drawing tool with the given canvas and preview canvas.
@@ -50,6 +54,14 @@ public class Pentagons implements Shapes<Pentagons> {
         this.canvas = canvas;
         this.previewCanvas = previewCanvas;
         this.gc = canvas.getGraphicsContext2D();
+    }
+
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger
+     */
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
     }
 
     /**
@@ -155,6 +167,8 @@ public class Pentagons implements Shapes<Pentagons> {
             anchorX = event.getX();
             anchorY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Pentagon drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {

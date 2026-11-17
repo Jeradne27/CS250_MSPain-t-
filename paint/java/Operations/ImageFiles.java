@@ -1,5 +1,24 @@
 package paint.Operations;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import java.time.LocalDateTime;
+
+import javafx.util.Duration;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.Animation;
+
+import javafx.application.Platform;
+
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -34,7 +53,7 @@ import javafx.stage.Stage;
  */
 
 // IMPROVEMENTS:
-// - updated clearModified method to ensure it properly resets the modified state of the file tab.
+// - Added formatting for logging messages
 
 // ISSUES:
 // - The way that loading errors are handled is simplistic and could be improved for user experience.
@@ -48,6 +67,20 @@ public class ImageFiles {
     // The supplier for the active FileTab and the function to add a new image tab.
     private final Supplier<FileTab> active;
     private final Function<String, FileTab> addImage;
+
+    private static final System.Logger logger = System.getLogger(ImageFiles.class.getName());
+
+    private final Path recoveryFolder = Path.of(System.getProperty("user.home"), "PaintRecovery");
+
+    private final ExecutorService autosaveWorker = Executors.newSingleThreadExecutor(task ->
+        new Thread(task, "AutosaveWorker")
+    );
+
+    private final Timeline autosaveTimer = new Timeline(new KeyFrame(Duration.seconds(30), event -> autosaveOpenTabs()));
+
+    private String autosaveFormat = "png";
+
+    private boolean autosaveActive;
 
     /**
      * Constructs an ImageFiles instance with the specified components.
@@ -143,6 +176,7 @@ public class ImageFiles {
 
         // Clear any previous modifications to the image tab.
         fileTab.clearModified();
+        fileTab.resetRecoveryID();
     }
 
     /**
@@ -197,23 +231,7 @@ public class ImageFiles {
 
             // If the image is not in PNG format, convert it to RGB to avoid transparency issues.
             if (!currentFormat.equals("png")) {
-                BufferedImage opImage = new BufferedImage(
-                    bufImage.getWidth(),
-                    bufImage.getHeight(),
-                    BufferedImage.TYPE_INT_RGB
-                 );
-
-                 var graphics = opImage.createGraphics();
-
-                 try {
-                    graphics.setColor(java.awt.Color.WHITE);
-                    graphics.fillRect(0, 0, opImage.getWidth(), opImage.getHeight());
-                    graphics.drawImage(bufImage, 0, 0, null);
-                 } finally {
-                    graphics.dispose();
-                 }
-                 // Draw a white background to handle transparency.                
-                 bufImage = opImage;
+                bufImage = flattenOnWhite(bufImage);
             }
 
             boolean saved = ImageIO.write(bufImage, currentFormat, file);
@@ -325,12 +343,142 @@ public class ImageFiles {
                     return false;
                 }
             }   
-            
         }
+
         // Save the image to the file.
         return saveImage(fileTab, file);
     }
+
+    /**
+     * Sets the format for autosave operations.
+     *
+     * @param format the format to use for autosave operations
+     */
+    public void setAutosaveFormat(String format) {
+        autosaveFormat = format;
+    }
+
+    public void setAutosaveActive(boolean active) {
+        if (active) {
+            autosaveTimer.setCycleCount(Timeline.INDEFINITE);
+            autosaveTimer.play();
+        } else {
+            autosaveTimer.stop();
+        }
+    }
+
+    /**
+     * Autosaves all open tabs.
+     */
+    private void autosaveOpenTabs() {
+        String format = autosaveFormat;
+
+        if (autosaveActive) {
+            return;
+        }
+
+        var snapshots = new java.util.LinkedHashMap<Path, BufferedImage>();
+
+        for (Tab tab : tabPane.getTabs()) {
+            if (!(tab.getUserData() instanceof FileTab fileTab) || !fileTab.isModified()) {
+                continue;
+            }
+
+            SnapshotParameters parameters = new SnapshotParameters();
+            parameters.setFill(Color.TRANSPARENT);
+
+            var snapshot = fileTab.getCanvas().snapshot(parameters, null);
+            var pixels = SwingFXUtils.fromFXImage(snapshot, null);
+            var destination = recoveryFolder.resolve(fileTab.getRecoveryID() + "." + format);
+            snapshots.put(destination,pixels);
+        }
+
+        if (snapshots.isEmpty()) {
+            return;
+        }
+
+        autosaveActive = true;
+
+        for (Path destination : snapshots.keySet()) {
+            logAutosave(destination, "Autosaving");
+        }
+
+        autosaveWorker.submit(() -> {
+            try {
+                // Create the recovery folder if it doesn't exist.
+                Files.createDirectories(recoveryFolder);
+
+                // for every snapshot, save file to the recovery folder
+                for (var entry : snapshots.entrySet()) {
+                    BufferedImage image = entry.getValue();
+
+                    if (!format.equals("png")) {
+                        image = flattenOnWhite(image);
+                    }
+
+                    if (!ImageIO.write(image, format, entry.getKey().toFile())) {
+                        throw new IOException("Failed to write image to " + entry.getKey());
+                    }
+
+                    logAutosave(entry.getKey(), "Autosaved");
+                }
+            } catch (IOException e) {
+                System.err.println("Autosave failed: " + e.getMessage());
+            } finally {
+                Platform.runLater(() -> autosaveActive = false);
+            }
+        });
+    }
     
+    /**
+     * Stops the autosave functionality.
+     */
+    public void stopAutosave() {
+        autosaveTimer.stop();
+        autosaveWorker.shutdown();
+    }
+
+    /**
+     * Creates a string binding for the autosave status alert.
+     *
+     * @return a string binding for the autosave status alert
+     */
+    public StringBinding autosaveStatusAlert() {
+        return Bindings.createStringBinding(() -> {
+            if (autosaveTimer.getStatus() != Animation.Status.RUNNING) {
+                return "Autosave off";
+            }
+
+            double remaining = autosaveTimer.getCycleDuration().toSeconds() - autosaveTimer.getCurrentTime().toSeconds();
+
+            int secondsLeft = Math.max(1, (int) Math.ceil(remaining));
+
+            return "Next autosave in " + secondsLeft + " s";
+        }, autosaveTimer.statusProperty(),autosaveTimer.currentTimeProperty());
+    }
+
+    /**
+     * Flattens the given image on a white background.
+     *
+     * @param image the image to flatten
+     * @return a new image flattened on a white background
+     */
+    private BufferedImage flattenOnWhite(BufferedImage image) {
+        BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+
+        var graphics = result.createGraphics();
+        
+        try {
+            graphics.setColor(java.awt.Color.WHITE);
+            graphics.fillRect(0, 0, result.getWidth(), result.getHeight());
+            graphics.drawImage(image, 0, 0, null);
+        } finally {
+            graphics.dispose();
+        }
+
+        return result;
+    }
+
     /**
      * Determines the format of the given file based on its extension.
      * @param file The file to check.
@@ -346,6 +494,20 @@ public class ImageFiles {
         }
         // Default to "png" if the file does not have a recognized extension.
         return "png";
+    }
+
+    /**
+     * Logs an autosave event.
+     *
+     * @param file The file that was autosaved.
+     * @param event The event that occurred.
+     */
+    private void logAutosave(Path file, String event) {
+        LocalDateTime now = LocalDateTime.now();
+
+        // Log the autosave event with a timestamp and thread information.
+        // Format: Date time ~ [File name]: event ~ Thread
+        System.out.printf("%tF %<tT ~ [%s]: %s ~ %s%n", now, file.getFileName(), event, Thread.currentThread().getName());
     }
 
     /**

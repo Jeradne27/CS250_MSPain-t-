@@ -1,5 +1,7 @@
 package paint.TopMenuBar;
 
+import java.util.function.Consumer; 
+
 import java.util.function.Supplier;
 
 import javafx.scene.Scene;
@@ -23,7 +25,7 @@ import paint.Operations.FileTab;
  */
 
 // IMPROVEMENTS:
-// - Renamed on the app screen as "View" for clarity
+// - N/A
 
 // ISSUES:
 // - N/A

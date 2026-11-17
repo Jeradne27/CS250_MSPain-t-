@@ -6,12 +6,16 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 
 import javafx.scene.canvas.Canvas;
 
 import paint.Menus.StyleMenu;
 
 import javafx.scene.layout.HBox;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -33,6 +37,9 @@ import paint.Tools.Diamonds;
 import paint.Tools.Hearts;
 import paint.Tools.Pentagons;
 import paint.Tools.RightTriangles;
+import paint.Tools.FourPointStars;
+import paint.Tools.FivePointStars;
+import paint.Tools.SixPointStars;
 import paint.Tools.Drawing;
 import paint.Tools.Selection;
 
@@ -45,18 +52,15 @@ import paint.Tools.Selection;
  */
 
 // IMPROVEMENTS:
-// - Added Hearts, Pentagons, Text, and Right Triangles tools.
-// - Added copy, paste, and cut under a new edit menu.
-// - Moved eraser, undo, redo, and clear to into the menubar in order to keep things separated
+// - Added elements for star shapes
+// - Added icons and hover labels for tools and edit items
 
 // ISSUES:
-// - No keyboard shortcuts for tool selection.
-// - Move the eraser, undo, redo, and clear options somewhere else
+// - Some of the icons aren't consistent
 
 public class ToolMenu {
     private final Canvas canvas;
 
-    // Calls to outside classes
     private Drawing<?> activeTool;
     private MenuBar toolBar;
 
@@ -74,6 +78,9 @@ public class ToolMenu {
     private Hearts hearts;
     private Pentagons pentagons;
     private RightTriangles rightTriangles;
+    private FourPointStars fourPointStars;
+    private FivePointStars fivePointStars;
+    private SixPointStars sixPointStars;
     private Text text;
     private Selection selection;
     private StyleMenu styleMenu;
@@ -94,13 +101,16 @@ public class ToolMenu {
      * @param hearts The hearts tool.
      * @param pentagons The pentagons tool.
      * @param rightTriangles The right triangles tool.
+     * @param fourPointStars The four-point stars tool.
+     * @param fivePointStars The five-point stars tool.
+     * @param sixPointStars The six-point stars tool.
      * @param text The text tool.
      * @param selection The selection tool.
      * @param styleMenu The style menu.
      * @param canvas The canvas to draw on.
      * @param file The file tab associated with the tool menu.
      */
-    public ToolMenu(Lines lines, Pencil pencil, Eraser eraser, Rectangles rectangles, Squares squares, Circles circles, Ellipses ellipses, Triangles triangles, Diamonds diamonds, Hearts hearts, Pentagons pentagons, RightTriangles rightTriangles, Text text, Selection selection, StyleMenu styleMenu, Canvas canvas, FileTab file) {
+    public ToolMenu(Lines lines, Pencil pencil, Eraser eraser, Rectangles rectangles, Squares squares, Circles circles, Ellipses ellipses, Triangles triangles, Diamonds diamonds, Hearts hearts, Pentagons pentagons, RightTriangles rightTriangles, FourPointStars fourPointStars, FivePointStars fivePointStars, SixPointStars sixPointStars, Text text, Selection selection, StyleMenu styleMenu, Canvas canvas, FileTab file) {
         this.lines = lines;
         this.pencil = pencil;
         this.eraser = eraser;
@@ -113,6 +123,9 @@ public class ToolMenu {
         this.hearts = hearts;
         this.pentagons = pentagons;
         this.rightTriangles = rightTriangles;
+        this.fourPointStars = fourPointStars;
+        this.fivePointStars = fivePointStars;
+        this.sixPointStars = sixPointStars;
         this.text = text;
         this.selection = selection;
         this.styleMenu = styleMenu;
@@ -122,10 +135,21 @@ public class ToolMenu {
         toolBar = new MenuBar();
 
         // Creates the buttons for eraser, undo, redo, and clear actions.
-        Button eraserButton = new Button("Eraser");
-        Button undoButton = new Button("Undo");
-        Button redoButton = new Button("Redo");
-        Button clearButton = new Button("Clear");
+        Button eraserButton = new Button();
+        eraserButton.setTooltip(new Tooltip("Eraser"));
+        eraserButton.setGraphic(loadIcon("/Icons/eraser.png"));
+
+        Button undoButton = new Button();
+        undoButton.setTooltip(new Tooltip("Undo"));
+        undoButton.setGraphic(loadIcon("/Icons/undo.png"));
+
+        Button redoButton = new Button();
+        redoButton.setTooltip(new Tooltip("Redo"));
+        redoButton.setGraphic(loadIcon("/Icons/redo.png"));
+
+        Button clearButton = new Button();
+        clearButton.setTooltip(new Tooltip("Clear Canvas"));
+        clearButton.setGraphic(loadIcon("/Icons/clear.png"));
 
         // Sets the action handlers for the buttons.
         undoButton.setOnAction(event -> file.undo());
@@ -138,10 +162,23 @@ public class ToolMenu {
 
         // Creates the draw menu and adds it to the tool bar.
         Menu drawMenu = new Menu("Draw");
-        MenuItem lineItem = new MenuItem("Line");
-        MenuItem pencilItem = new MenuItem("Pencil");
-        MenuItem textItem = new MenuItem("Text");
-        MenuItem selectItem = new MenuItem("Select");
+
+        MenuItem lineItem = new MenuItem();
+        lineItem.setGraphic(loadIcon("/Icons/line.png"));
+        Tooltip.install(lineItem.getGraphic(), new Tooltip("Line"));
+
+        MenuItem pencilItem = new MenuItem();
+        pencilItem.setGraphic(loadIcon("/Icons/pencil.png"));
+        Tooltip.install(pencilItem.getGraphic(), new Tooltip("Pencil"));
+
+        MenuItem textItem = new MenuItem();
+        textItem.setGraphic(loadIcon("/Icons/text.png"));
+        Tooltip.install(textItem.getGraphic(), new Tooltip("Text"));
+
+        MenuItem selectItem = new MenuItem();
+        selectItem.setGraphic(loadIcon("/Icons/select.png"));
+        Tooltip.install(selectItem.getGraphic(), new Tooltip("Select"));
+
         drawMenu.getItems().add(lineItem);
         drawMenu.getItems().add(pencilItem);
         drawMenu.getItems().add(textItem);
@@ -155,24 +192,71 @@ public class ToolMenu {
         Menu editMenu = new Menu("Edit");
 
         // Creates the menu items for the edit menu.
-        MenuItem copyItem = new MenuItem("Copy");
-        MenuItem cutItem = new MenuItem("Cut");
-        MenuItem pasteItem = new MenuItem("Paste");
+        MenuItem copyItem = new MenuItem();
+        copyItem.setGraphic(loadIcon("/Icons/copy.png"));
+        Tooltip.install(copyItem.getGraphic(), new Tooltip("Copy"));
+
+        MenuItem cutItem = new MenuItem();
+        cutItem.setGraphic(loadIcon("/Icons/cut.png"));
+        Tooltip.install(cutItem.getGraphic(), new Tooltip("Cut"));
+
+        MenuItem pasteItem = new MenuItem();
+        pasteItem.setGraphic(loadIcon("/Icons/paste.png"));
+        Tooltip.install(pasteItem.getGraphic(), new Tooltip("Paste"));
 
         // Adds the menu items to the edit menu.
         editMenu.getItems().addAll(copyItem, cutItem, pasteItem);
 
         // Creates the menu items for the shapes menu.
-        MenuItem rectangleItem = new MenuItem("Rectangle");
-        MenuItem squareItem = new MenuItem("Square");
-        MenuItem circleItem = new MenuItem("Circle");
-        MenuItem ellipseItem = new MenuItem("Ellipse");
-        MenuItem triangleItem = new MenuItem("Triangle");
-        MenuItem diamondItem = new MenuItem("Diamond");
-        MenuItem heartItem = new MenuItem("Heart");
-        MenuItem pentagonItem = new MenuItem("Pentagon");
-        MenuItem rightTriangleItem = new MenuItem("Right Triangle");
+        MenuItem rectangleItem = new MenuItem();
+        rectangleItem.setGraphic(loadIcon("/Icons/rectangle.png"));
+        Tooltip.install(rectangleItem.getGraphic(), new Tooltip("Rectangle"));
 
+        MenuItem squareItem = new MenuItem();
+        squareItem.setGraphic(loadIcon("/Icons/square.png"));
+        Tooltip.install(squareItem.getGraphic(), new Tooltip("Square"));
+        
+
+        MenuItem circleItem = new MenuItem();
+        circleItem.setGraphic(loadIcon("/Icons/circle.png"));
+        Tooltip.install(circleItem.getGraphic(), new Tooltip("Circle"));
+        
+        MenuItem ellipseItem = new MenuItem();
+        ellipseItem.setGraphic(loadIcon("/Icons/ellipse.png"));
+        Tooltip.install(ellipseItem.getGraphic(), new Tooltip("Ellipse"));
+        
+        MenuItem triangleItem = new MenuItem();
+        triangleItem.setGraphic(loadIcon("/Icons/triangle.png"));
+        Tooltip.install(triangleItem.getGraphic(), new Tooltip("Triangle"));
+        
+        MenuItem diamondItem = new MenuItem();
+        diamondItem.setGraphic(loadIcon("/Icons/diamond.png"));
+        Tooltip.install(diamondItem.getGraphic(), new Tooltip("Diamond"));
+        
+        MenuItem heartItem = new MenuItem();
+        heartItem.setGraphic(loadIcon("/Icons/heart.png"));
+        Tooltip.install(heartItem.getGraphic(), new Tooltip("Heart"));
+        
+        MenuItem pentagonItem = new MenuItem();
+        pentagonItem.setGraphic(loadIcon("/Icons/pentagon.png"));
+        Tooltip.install(pentagonItem.getGraphic(), new Tooltip("Pentagon"));
+
+        MenuItem rightTriangleItem = new MenuItem();
+        rightTriangleItem.setGraphic(loadIcon("/Icons/rightTriangle.png"));
+        Tooltip.install(rightTriangleItem.getGraphic(), new Tooltip("Right Triangle"));
+
+        MenuItem fourPointStarItem = new MenuItem();
+        fourPointStarItem.setGraphic(loadIcon("/Icons/fourPointStar.png"));
+        Tooltip.install(fourPointStarItem.getGraphic(), new Tooltip("Four-Point Star"));
+
+        MenuItem fivePointStarItem = new MenuItem();
+        fivePointStarItem.setGraphic(loadIcon("/Icons/fivePointStar.png"));
+        Tooltip.install(fivePointStarItem.getGraphic(), new Tooltip("Five-Point Star"));
+
+        MenuItem sixPointStarItem = new MenuItem();
+        sixPointStarItem.setGraphic(loadIcon("/Icons/sixPointStar.png"));
+        Tooltip.install(sixPointStarItem.getGraphic(), new Tooltip("Six-Point Star"));
+        
         // Adds the menu items to the shapes menu.
         shapeMenu.getItems().add(rectangleItem);
         shapeMenu.getItems().add(squareItem);
@@ -183,6 +267,9 @@ public class ToolMenu {
         shapeMenu.getItems().add(heartItem);
         shapeMenu.getItems().add(pentagonItem);
         shapeMenu.getItems().add(rightTriangleItem);
+        shapeMenu.getItems().add(fourPointStarItem);
+        shapeMenu.getItems().add(fivePointStarItem);
+        shapeMenu.getItems().add(sixPointStarItem);
 
         // Adds the shapes and edit menus to the tool bar.
         toolBar.getMenus().addAll(shapeMenu, editMenu);
@@ -229,6 +316,11 @@ public class ToolMenu {
             selectTool(ellipses, canvas);
         });
 
+        sixPointStarItem.setOnAction(event -> {
+            styleMenu.setSelectedTool(sixPointStars);
+            selectTool(sixPointStars, canvas);
+        });
+
         triangleItem.setOnAction(event -> {
             styleMenu.setSelectedTool(triangles);
             selectTool(triangles, canvas);
@@ -242,6 +334,16 @@ public class ToolMenu {
         heartItem.setOnAction(event -> {
             styleMenu.setSelectedTool(hearts);
             selectTool(hearts, canvas);
+        });
+
+        fourPointStarItem.setOnAction(event -> {
+            styleMenu.setSelectedTool(fourPointStars);
+            selectTool(fourPointStars, canvas);
+        });
+
+        fivePointStarItem.setOnAction(event -> {
+            styleMenu.setSelectedTool(fivePointStars);
+            selectTool(fivePointStars, canvas);
         });
 
         pentagonItem.setOnAction(event -> {
@@ -300,6 +402,21 @@ public class ToolMenu {
         activeTool = nextTool;
         styleMenu.setSelectedTool(activeTool);
         activeTool.activateTool(canvas);
+    }
+
+    /**
+     * Loads an icon from the specified path.
+     * @param path The path to the icon file.
+     * @return The loaded ImageView representing the icon.
+     */
+    private ImageView loadIcon(String path) {
+        ImageView icon = new ImageView(new Image(getClass().getResourceAsStream(path)));
+
+        icon.setFitWidth(16);
+        icon.setFitHeight(16);
+        icon.setPreserveRatio(true);
+
+        return icon;
     }
 
     /**

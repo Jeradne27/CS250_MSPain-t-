@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -16,7 +18,7 @@ import javafx.scene.shape.StrokeLineCap;
  */
 
 // IMPROVEMENTS:
-// - Added live preview of the circle while dragging the mouse.
+// - Added handlers for logging
 
 // ISSUES:
 // - There is no menu option to fill the circle at the moment, though there are setters for fill color and fill status.
@@ -41,6 +43,8 @@ public class Circles implements Shapes<Circles> {
 
     private boolean dragging;
 
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs a new Circles tool with the given canvas.
      * @param canvas The canvas on which the circle will be drawn.
@@ -49,6 +53,14 @@ public class Circles implements Shapes<Circles> {
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
         this.previewCanvas = previewCanvas;
+    }
+
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger The logger to set for the canvas.
+     */
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
     }
 
     /**
@@ -144,6 +156,8 @@ public class Circles implements Shapes<Circles> {
                 anchorX = event.getX();
                 anchorY = event.getY();
                 dragging = true;
+
+                canvasLogger.accept("Circle drawn on canvas");
             }   
         });
 
@@ -224,6 +238,7 @@ public class Circles implements Shapes<Circles> {
         }
         // Draw the circle outline.
         gc.strokeOval(anchorX - radius, anchorY - radius, 2 * radius, 2 * radius);
+
         gc.restore();
     }
     

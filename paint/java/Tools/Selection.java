@@ -2,6 +2,8 @@ package paint.Tools;
 
 import java.awt.Rectangle;
 
+import java.util.function.Consumer;
+
 import javafx.event.EventHandler;
 
 import javafx.geometry.Rectangle2D;
@@ -28,9 +30,7 @@ import paint.Operations.FileTab;
  */
 
 // IMPROVEMENTS:
-// - Added support for selecting and moving pixels on the canvas.
-// - Added support for copying and pasting selected pixels.
-// - Added support for cutting selected pixels.
+// - Added support for thread logging
 
 // ISSUES:
 // - There is no confirmation that a section was successfully copied and is ready for pasting, so I want to add a visual indicator or message to inform the user.
@@ -57,6 +57,8 @@ public class Selection implements Drawing<Selection> {
     private final EventHandler<MouseEvent> draggingHandler = this::onDrag;
     private final EventHandler<MouseEvent> releaseHandler = this::onRelease;
 
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs a new Selection tool with the specified FileTab.
      *
@@ -67,6 +69,13 @@ public class Selection implements Drawing<Selection> {
         this.previewCanvas = file.getPreviewCanvas();
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger
+     */
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
+    }
     /**
      * Activates the selection tool on the specified canvas.
      *
@@ -109,7 +118,8 @@ public class Selection implements Drawing<Selection> {
             int x = (int) Math.floor(pressedX);
             int y = (int) Math.floor(pressedY);
 
-            file.canvasEdit(() -> canvas.getGraphicsContext2D().drawImage(image, x, y));
+            file.canvasEdit("Place paste",() -> canvas.getGraphicsContext2D().drawImage(image, x, y));
+
             return;
         }
 
@@ -168,7 +178,7 @@ public class Selection implements Drawing<Selection> {
 
             // Clear the original selection area before moving the pixels.
             if (!source.equals(destination)) {
-                file.canvasEdit(() -> {
+                file.canvasEdit("Move selection", () -> {
                     clearPixels(source);
                     canvas.getGraphicsContext2D().drawImage(pixels, destination.getMinX(), destination.getMinY());
                 });
@@ -268,6 +278,7 @@ public class Selection implements Drawing<Selection> {
         }
 
         copiedPixels = captureSelection();
+        canvasLogger.accept("Selection copied to clipboard");
         return true;
     }
 
@@ -280,7 +291,7 @@ public class Selection implements Drawing<Selection> {
         }
 
         Rectangle2D source = selection;
-        file.canvasEdit(() -> clearPixels(source));
+        file.canvasEdit("Cut selection", () -> clearPixels(source));
         selection = null;
         clearPreview();
     }
@@ -300,7 +311,7 @@ public class Selection implements Drawing<Selection> {
         pendingPaste = null;
 
         // Perform the paste operation on the canvas.
-        file.canvasEdit(() -> {
+        file.canvasEdit("Paste selection", () -> {
             GraphicsContext gc = canvas.getGraphicsContext2D();;
 
             gc.save();

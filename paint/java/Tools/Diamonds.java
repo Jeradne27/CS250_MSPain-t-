@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -19,7 +21,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Added preview of the diamond while dragging the mouse.
+// - Added handler for thread logging
 
 // ISSUES:
 // - There is no menu option to fill the diamond at the moment, though there are setters for fill color and fill status.
@@ -50,6 +52,8 @@ public class Diamonds implements Shapes<Diamonds> {
 
     private boolean dragging;
     
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs a new Diamonds tool with the given canvas.
      * @param canvas The canvas on which the diamond will be drawn.
@@ -58,6 +62,14 @@ public class Diamonds implements Shapes<Diamonds> {
         this.canvas = canvas;
         this.previewCanvas = previewCanvas;
         this.gc = canvas.getGraphicsContext2D();
+    }
+
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger The logger to set for the canvas.
+     */
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
     }
 
     /**
@@ -152,6 +164,8 @@ public class Diamonds implements Shapes<Diamonds> {
             anchorX = event.getX();
             anchorY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Diamond drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {
@@ -238,6 +252,7 @@ public class Diamonds implements Shapes<Diamonds> {
             new double[]{topY, midY, bottomY, midY},
             4
         );
+
         gc.restore();
     }
 

@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -16,8 +18,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Added a preview of the triangle while the user is dragging the mouse.
-// - Supports drawing triangle in different orientations (e.g., pointing up, down, left, right).
+// - Added a handler for thread logging
 
 // ISSUES:
 // - There isn't a fill option yet, so setFill and setFillColor methods are currently unused.// - There isn't a fill option yet, so setFill and setFillColor methods are currently unused.
@@ -47,6 +48,8 @@ public class Triangles implements Shapes<Triangles> {
 
     private boolean dragging;
 
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs a new Triangles tool with the specified canvas.
      *
@@ -56,6 +59,14 @@ public class Triangles implements Shapes<Triangles> {
         this.canvas = canvas;
         this.previewCanvas = previewCanvas;
         this.gc = canvas.getGraphicsContext2D();
+    }
+
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger the logger to set
+     */
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
     }
 
     /**
@@ -161,6 +172,8 @@ public class Triangles implements Shapes<Triangles> {
             anchorX = event.getX();
             anchorY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Triangle drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {

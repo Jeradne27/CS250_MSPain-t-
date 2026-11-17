@@ -10,6 +10,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Tooltip;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import javafx.scene.canvas.Canvas;
 
@@ -28,11 +32,11 @@ import paint.Tools.Drawing;
  */
 
 // IMPROVEMENTS: 
-// - Moved eraser button from the style menu to the tool menu to keep things consistent
+// - Added icons for tools
+// - Hover labels
 
 //ISSUES:
-// - No keyboard shortcuts for style options.
-// - Dashed could be expanded to include different dash patterns.
+// - Some hover labels take a minute to show up, but I don't know how to fix it
 
 public class StyleMenu {
 
@@ -44,10 +48,11 @@ public class StyleMenu {
 
     // UI components for the style menu.
     private final ColorPicker colorPicker = new ColorPicker();
-    private final Button colorDropper = new Button("Color Dropper");
+    private final Button colorDropper = new Button();
     private final Slider widthSlider = new Slider(1, 20, 5);
-    private final MenuButton widthMenu = new MenuButton("Width"); 
-    private final CheckBox dashedCheckBox = new CheckBox("Dashed");
+    private final MenuButton widthMenu = new MenuButton(); 
+    private final CheckBox dashedCheckBox = new CheckBox();
+
 
     /**
      * Sets the currently selected drawing tool.
@@ -70,6 +75,17 @@ public class StyleMenu {
     public StyleMenu(Canvas canvas, StackPane drawingArea) {
         this.canvas = canvas;
         this.drawingArea = drawingArea;
+        
+        colorPicker.setTooltip(new Tooltip("Color"));
+
+        colorDropper.setTooltip(new Tooltip("Color Dropper"));
+        colorDropper.setGraphic(loadIcon("/Icons/dropper.png"));
+
+        widthMenu.setGraphic(loadIcon("/Icons/width.png"));
+        widthMenu.setTooltip(new Tooltip("Width"));
+
+        dashedCheckBox.setGraphic(loadIcon("/Icons/dash.png"));
+        dashedCheckBox.setTooltip(new Tooltip("Dashed"));
 
         colorDropper.setOnAction(event -> startColorDropper());
         colorPicker.setOnAction(event -> {
@@ -146,6 +162,22 @@ public class StyleMenu {
             // Reactivates the previously selected tool after picking a color.
             selectedTool.activateTool(canvas);
         });
+    }
+
+    /**
+     * Loads an icon from the specified path.
+     * @param path The path to the icon file.
+     * @return The loaded ImageView representing the icon.
+     */
+
+    private ImageView loadIcon(String path) {
+        ImageView icon = new ImageView(new Image(getClass().getResourceAsStream(path)));
+
+        icon.setFitWidth(16);
+        icon.setFitHeight(16);
+        icon.setPreserveRatio(true);
+
+        return icon;
     }
 
     /**

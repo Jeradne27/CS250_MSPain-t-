@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -12,8 +14,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Added a preview of the pencil while drawing.
-// - Improved the smoothness of the pencil
+// - Added handler for thread logging
 
 // ISSUES:
 // - The pencil is still slightly choppy when drawing quickly, but it has improved from the first version
@@ -27,6 +28,9 @@ public class Pencil implements Drawing<Pencil> {
 
     private boolean dashed = false;
 
+    private Consumer<String> canvasLogger = action -> {};
+
+
     /**
      * Constructs a Pencil drawing tool with the given canvas.
      *
@@ -35,6 +39,14 @@ public class Pencil implements Drawing<Pencil> {
     public Pencil(Canvas canvas) {
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
+    }
+
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger
+     */
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
     }
 
     /**
@@ -112,6 +124,8 @@ public class Pencil implements Drawing<Pencil> {
             gc.setLineWidth(width);
             gc.setStroke(color);
         });
+
+        canvasLogger.accept("Pencil used on canvas");
     }
 
     /**

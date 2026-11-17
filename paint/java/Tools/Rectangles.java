@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -15,7 +17,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Added a live preview of the rectangle while drawing.
+// - Added a handler for thread logging
 
 // ISSUES:
 // - There isn't a fill option yet, so setFill and setFillColor methods are currently unused.
@@ -38,6 +40,8 @@ public class Rectangles implements Shapes<Rectangles> {
 
     private boolean dashed;
 
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs a Rectangles drawing tool with the given canvas.
      *
@@ -47,6 +51,14 @@ public class Rectangles implements Shapes<Rectangles> {
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
         this.previewCanvas = previewCanvas;
+    }
+
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger
+     */
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
     }
 
     /**
@@ -152,6 +164,8 @@ public class Rectangles implements Shapes<Rectangles> {
             anchorX = event.getX();
             anchorY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Rectangle drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {
@@ -232,6 +246,7 @@ public class Rectangles implements Shapes<Rectangles> {
         gc.strokeRect(l, t, w, h);
         gc.restore();
     }
+    
     /**
      * Returns the current instance of the Rectangles drawing tool.
      *

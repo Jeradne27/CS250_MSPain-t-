@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -15,8 +17,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Newest shape in the shape menu
-// - Supports different orientations of the right triangle
+// - Added handler for thread logging
 
 // ISSUES:
 // - Since there is no fill menu yet, the fill color cannot be changed yet.
@@ -39,6 +40,8 @@ public class RightTriangles implements Shapes<RightTriangles> {
 
     private boolean dragging;
 
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs a new RightTriangles tool with the specified canvas and preview canvas.
      *
@@ -51,6 +54,14 @@ public class RightTriangles implements Shapes<RightTriangles> {
         this.gc = canvas.getGraphicsContext2D();
     }
     
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger
+     */
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
+    }
+
     /**
      * Sets the stroke color of the right triangle.
      *
@@ -154,6 +165,8 @@ public class RightTriangles implements Shapes<RightTriangles> {
             anchorX = event.getX();
             anchorY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Right triangle drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {

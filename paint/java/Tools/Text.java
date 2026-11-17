@@ -22,7 +22,7 @@ import javafx.scene.text.TextAlignment;
  */
 
 // IMPROVEMENT: 
-// - Allows to add text to the canvas at a specified location
+// - N/A
 
 // ISSUES:
 // - Text doesn't support changes in font, font size, or color, hoping to implement that in the future.

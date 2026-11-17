@@ -12,13 +12,18 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 
 import javafx.scene.input.MouseEvent;
 
 import javafx.scene.layout.BorderPane; 
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 import javafx.stage.Stage;
+
+import javafx.geometry.Pos;
 
 import paint.Operations.FileTab;
 import paint.Operations.ImageFiles;
@@ -42,6 +47,9 @@ import paint.Tools.Diamonds;
 import paint.Tools.Hearts;
 import paint.Tools.Pentagons;
 import paint.Tools.RightTriangles;
+import paint.Tools.FourPointStars;
+import paint.Tools.FivePointStars;
+import paint.Tools.SixPointStars;
 import paint.Tools.Text;
 import paint.Tools.Eraser;
 import paint.Tools.Selection;
@@ -63,15 +71,12 @@ import javafx.scene.Scene;
  */
 
 // IMPROVEMENTS:
-// - Empty state handling for the tab pane when no files are open.
-// - Undo/Redo functionality for drawing operations.
-// - Copy/Cut/Paste functionality for drawing operations.
-// - live preview of drawing operations.
+// - Added UI details
+// - Thread logging
 
 // ISSUES:
 // - When selecting and moving shapes or pieces of an image, there is no preview of the movement
 // - When moving elements, if it placed and picked up again, it also picks up another piece unintentionally.
-// - There is no confirmation when copying or pasting elements, would like to add a blinking indicator when an element is ready to be pasted.
 
 public class App extends Application {
     private final BorderPane pane = new BorderPane();
@@ -99,6 +104,9 @@ public class App extends Application {
     private Hearts hearts;
     private Pentagons pentagons;
     private RightTriangles rightTriangles;
+    private FourPointStars fourPointStars;
+    private FivePointStars fivePointStars;
+    private SixPointStars sixPointStars;
     private Text text;
 
 
@@ -121,7 +129,22 @@ public class App extends Application {
 
         tabPane.setMinSize(0, 0);
         pane.setCenter(tabPane);
-        pane.setTop(top);
+
+        Label titleLabel = new Label("MS Pain(t) by JRC<3");
+        titleLabel.setMaxWidth(Double.MAX_VALUE);
+        titleLabel.getStyleClass().add("title-bar");
+
+        Label autosaveLabel = new Label();
+        autosaveLabel.textProperty().bind(files.autosaveStatusAlert());
+
+        var mainMenuBar = mainMenu.getMenuBar();
+        mainMenuBar.setMaxWidth(Double.MAX_VALUE);
+
+        HBox menuRow = new HBox(8, mainMenuBar, autosaveLabel);
+        menuRow.setAlignment(Pos.CENTER_RIGHT);
+        HBox.setHgrow(mainMenuBar, Priority.ALWAYS);
+
+        pane.setTop(new VBox(titleLabel, menuRow, top));
 
         // Add a listener to the tab selection model to update the tool and style menus when a different tab is selected.
         tabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {showTabMenus();});
@@ -177,22 +200,55 @@ public class App extends Application {
         StyleMenu styleMenu = new StyleMenu(fileCanvas, file.getDrawingArea());
 
         Lines lines = new Lines(fileCanvas, file.getPreviewCanvas());
+        lines.setCanvasLogger(file::logCanvasAction);
+
         Pencil pencil = new Pencil(fileCanvas);
+        pencil.setCanvasLogger(file::logCanvasAction);
+
         Eraser eraser = new Eraser(fileCanvas);
+        eraser.setCanvasLogger(file::logCanvasAction);
 
         Rectangles rectangles = new Rectangles(fileCanvas, file.getPreviewCanvas());
+        rectangles.setCanvasLogger(file::logCanvasAction);
+
         Squares squares = new Squares(fileCanvas, file.getPreviewCanvas());
+        squares.setCanvasLogger(file::logCanvasAction);
+
         Circles circles = new Circles(fileCanvas, file.getPreviewCanvas());
+        circles.setCanvasLogger(file::logCanvasAction);
+
         Ellipses ellipses = new Ellipses(fileCanvas, file.getPreviewCanvas());
+        ellipses.setCanvasLogger(file::logCanvasAction);
+
         Triangles triangles = new Triangles(fileCanvas, file.getPreviewCanvas());
+        triangles.setCanvasLogger(file::logCanvasAction);
+
         Diamonds diamonds = new Diamonds(fileCanvas, file.getPreviewCanvas());
+        diamonds.setCanvasLogger(file::logCanvasAction);
+
         Hearts hearts = new Hearts(fileCanvas, file.getPreviewCanvas());
+        hearts.setCanvasLogger(file::logCanvasAction);
+
         Pentagons pentagons = new Pentagons(fileCanvas, file.getPreviewCanvas());
+        pentagons.setCanvasLogger(file::logCanvasAction);
+
         RightTriangles rightTriangles = new RightTriangles(fileCanvas, file.getPreviewCanvas());
-        Text text = new Text(fileCanvas, file::canvasEdit);
+        rightTriangles.setCanvasLogger(file::logCanvasAction);
+
+        FourPointStars fourPointStars = new FourPointStars(fileCanvas, file.getPreviewCanvas());
+        fourPointStars.setCanvasLogger(file::logCanvasAction);
+
+        FivePointStars fivePointStars = new FivePointStars(fileCanvas, file.getPreviewCanvas());
+        fivePointStars.setCanvasLogger(file::logCanvasAction);
+
+        SixPointStars sixPointStars = new SixPointStars(fileCanvas, file.getPreviewCanvas());
+        sixPointStars.setCanvasLogger(file::logCanvasAction);
+
+        Text text = new Text(fileCanvas, edit -> file.canvasEdit("Text input", edit));
+        
         Selection selection = new Selection(file);
 
-        ToolMenu toolMenu = new ToolMenu(lines, pencil, eraser, rectangles, squares, circles, ellipses, triangles, diamonds, hearts, pentagons, rightTriangles, text, selection, styleMenu, fileCanvas, file);
+        ToolMenu toolMenu = new ToolMenu(lines, pencil, eraser, rectangles, squares, circles, ellipses, triangles, diamonds, hearts, pentagons, rightTriangles, fourPointStars, fivePointStars, sixPointStars, text, selection, styleMenu, fileCanvas, file);
     
         file.setToolMenu(toolMenu);
         file.setStyleMenu(styleMenu);
@@ -223,7 +279,7 @@ public class App extends Application {
      * Updates the top menu bar to reflect the currently active file tab's tool and style menus.
      */
     private void showTabMenus() {
-        top.getChildren().setAll(mainMenu.getMenuBar());
+        top.getChildren().clear();
 
         FileTab file = getActiveFileTab();
 

@@ -9,10 +9,10 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - None at the moment.
+// - N/A
 
 // ISSUES:
-// - None at the moment.
+// - N/A
 
 // Implementeded by:
 // - Lines.java

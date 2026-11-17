@@ -4,6 +4,9 @@ import paint.Operations.*;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.CheckMenuItem;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -24,13 +27,11 @@ import paint.TopMenuBar.Zoom;
  */
 
 // IMPROVEMENTS:
-// - Added more keyboard shortcuts for frequently used actions (Open, New Tab, Save, Save As, Close, Reset Zoom, Help, About)
-// - Made some changes to the layout and organization of the menu items for better user experience.
-// - Renamed the "View" menu to "Zoom" for clarity.
+// - Added threading
+// - Autosave added
 
 // ISSUES: 
-// - The zoom menu currently only has a reset option and lacks keyboard shortcuts for zooming in and out.
-// - The zoom slider doesn't start at the middle position.
+// - No Icons for the File Menu Items
 
 public class MainMenu {
     
@@ -71,6 +72,7 @@ public class MainMenu {
         MenuItem openTabItem = new MenuItem("Open In New Tab");
         MenuItem saveItem = new MenuItem("Save");
         MenuItem saveAsItem = new MenuItem("Save As");
+        CheckMenuItem autosaveItem = new CheckMenuItem("Autosave");
         MenuItem closeItem = new MenuItem("Close");
 
         // viewing options handled by the viewmanager
@@ -82,7 +84,30 @@ public class MainMenu {
 
         menuBar.getMenus().addAll(fileMenu, zoomMenu, helpMenu);
 
-        fileMenu.getItems().addAll(openItem, newTabItem, openTabItem, saveItem, saveAsItem, closeItem);
+        // Handle autosave functionality
+        autosaveItem.setOnAction(event -> {
+            if (!autosaveItem.isSelected()) {
+                files.setAutosaveActive(false);
+                return;
+            }
+
+            ChoiceDialog<String> dialog = new ChoiceDialog<>("png", "png", "jpg", "bmp");
+            dialog.setTitle("Autosave");
+            dialog.setHeaderText("Select the file format for autosave:");
+            dialog.setContentText("Format:");
+
+            var selectedFormat = dialog.showAndWait();
+
+            if (selectedFormat.isEmpty()) {
+                autosaveItem.setSelected(false);
+                return;
+            }
+
+            files.setAutosaveFormat(selectedFormat.get());
+            files.setAutosaveActive(true);
+        });
+
+        fileMenu.getItems().addAll(openItem, newTabItem, openTabItem, saveItem, saveAsItem, autosaveItem, closeItem);
     
         zoomMenu.getItems().addAll(resetZoomItem);
 

@@ -1,5 +1,7 @@
 package paint.Tools;
 
+import java.util.function.Consumer; 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -16,7 +18,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Added a live preview of the square while drawing.
+// - Added a handler for thread logging
 
 // ISSUES:
 // - There isn't a fill option yet, so setFill and setFillColor methods are currently unused.
@@ -39,6 +41,8 @@ public class Squares implements Shapes<Squares> {
     
     private boolean dashed;
 
+    private Consumer<String> canvasLogger = action -> {};
+
     /**
      * Constructs a Squares drawing tool with the given canvas.
      *
@@ -50,6 +54,14 @@ public class Squares implements Shapes<Squares> {
         this.previewCanvas = previewCanvas;
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger the logger to set
+     */
+    public void setCanvasLogger(Consumer<String> canvasLogger) {
+        this.canvasLogger = canvasLogger;
+    }
+    
     /**
      * Sets the color of the square drawing tool.
      *
@@ -153,6 +165,8 @@ public class Squares implements Shapes<Squares> {
             anchorX = event.getX();
             anchorY = event.getY();
             dragging = true;
+
+            canvasLogger.accept("Square drawn on canvas");
         });
 
         canvas.setOnMouseDragged(event -> {
