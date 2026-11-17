@@ -71,15 +71,12 @@ import javafx.scene.Scene;
  */
 
 // IMPROVEMENTS:
-// - Empty state handling for the tab pane when no files are open.
-// - Undo/Redo functionality for drawing operations.
-// - Copy/Cut/Paste functionality for drawing operations.
-// - live preview of drawing operations.
+// - Added UI details
+// - Thread logging
 
 // ISSUES:
 // - When selecting and moving shapes or pieces of an image, there is no preview of the movement
 // - When moving elements, if it placed and picked up again, it also picks up another piece unintentionally.
-// - There is no confirmation when copying or pasting elements, would like to add a blinking indicator when an element is ready to be pasted.
 
 public class App extends Application {
     private final BorderPane pane = new BorderPane();

@@ -19,6 +19,9 @@
     -fx-border-width: 0px 0px 1px 0px;
 }
 
+/**
+ * Styles for the title bar.
+ */
 .title-bar {
     -fx-background-color: #fcb0ef;
     -fx-text-fill: #1a1a1a;
@@ -30,6 +33,9 @@
     -fx-alignment: center;
 }
 
+/**
+ * Styles for the tool bar.
+ */
 .tool-bar {
     -fx-background-color: #e4e4e4;
     -fx-alignment: center-left;
@@ -39,6 +45,9 @@
     -fx-border-width: 0px 0px 1px 0px;
 }
 
+/**
+ * Styles for the tool menu row.
+ */
 .tool-menu-row {
     -fx-background-color: #e4e4e4;
     -fx-alignment: center-left;
@@ -48,11 +57,17 @@
     -fx-border-width: 0px 0px 1px 0px;
 }
 
+/**
+ * Styles for the menu bar within the tool menu row.
+ */
 .tool-menu-row > .menu-bar {
     -fx-background-color: transparent;
     -fx-border-width: 0px 0px 1px 0px;
 }
 
+/**
+ * Styles for the width options.
+ */
 .width-options {
     -fx-background-color: #e4e4e4;
     -fx-alignment: center-left;
@@ -62,6 +77,9 @@
     -fx-border-width: 0px 0px 1px 0px;
 }
 
+/**
+ * Styles for the label.
+ */
 .label {
     -fx-text-fill: #333333;
 }

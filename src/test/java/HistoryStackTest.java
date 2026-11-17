@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import javafx.scene.canvas.Canvas;
 
-
+/**
+ * Tests for the HistoryStack class.
+ */
 class HistoryStackTest {
     @Test
     void testHistoryStack() {

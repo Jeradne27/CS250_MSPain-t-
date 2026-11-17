@@ -18,7 +18,7 @@ import javafx.scene.shape.StrokeLineCap;
  */
 
 // IMPROVEMENTS:
-// - Added live preview of the circle while dragging the mouse.
+// - Added handlers for logging
 
 // ISSUES:
 // - There is no menu option to fill the circle at the moment, though there are setters for fill color and fill status.
@@ -55,6 +55,10 @@ public class Circles implements Shapes<Circles> {
         this.previewCanvas = previewCanvas;
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger The logger to set for the canvas.
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }

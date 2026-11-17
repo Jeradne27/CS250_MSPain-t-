@@ -32,11 +32,11 @@ import paint.Tools.Drawing;
  */
 
 // IMPROVEMENTS: 
-// - Moved eraser button from the style menu to the tool menu to keep things consistent
+// - Added icons for tools
+// - Hover labels
 
 //ISSUES:
-// - No keyboard shortcuts for style options.
-// - Dashed could be expanded to include different dash patterns.
+// - Some hover labels take a minute to show up, but I don't know how to fix it
 
 public class StyleMenu {
 
@@ -163,6 +163,12 @@ public class StyleMenu {
             selectedTool.activateTool(canvas);
         });
     }
+
+    /**
+     * Loads an icon from the specified path.
+     * @param path The path to the icon file.
+     * @return The loaded ImageView representing the icon.
+     */
 
     private ImageView loadIcon(String path) {
         ImageView icon = new ImageView(new Image(getClass().getResourceAsStream(path)));

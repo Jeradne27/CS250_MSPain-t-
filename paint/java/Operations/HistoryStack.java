@@ -21,7 +21,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - History is held in a stack of snapshots of the canvas.
+// - N/A
 
 // ISSUES:
 // - Memory usage can increase with many snapshots, could further limit the number of stored snapshots.

@@ -53,7 +53,7 @@ import javafx.stage.Stage;
  */
 
 // IMPROVEMENTS:
-// - updated clearModified method to ensure it properly resets the modified state of the file tab.
+// - Added formatting for logging messages
 
 // ISSUES:
 // - The way that loading errors are handled is simplistic and could be improved for user experience.
@@ -349,6 +349,11 @@ public class ImageFiles {
         return saveImage(fileTab, file);
     }
 
+    /**
+     * Sets the format for autosave operations.
+     *
+     * @param format the format to use for autosave operations
+     */
     public void setAutosaveFormat(String format) {
         autosaveFormat = format;
     }
@@ -362,6 +367,9 @@ public class ImageFiles {
         }
     }
 
+    /**
+     * Autosaves all open tabs.
+     */
     private void autosaveOpenTabs() {
         String format = autosaveFormat;
 
@@ -397,8 +405,10 @@ public class ImageFiles {
 
         autosaveWorker.submit(() -> {
             try {
+                // Create the recovery folder if it doesn't exist.
                 Files.createDirectories(recoveryFolder);
 
+                // for every snapshot, save file to the recovery folder
                 for (var entry : snapshots.entrySet()) {
                     BufferedImage image = entry.getValue();
 
@@ -420,11 +430,19 @@ public class ImageFiles {
         });
     }
     
+    /**
+     * Stops the autosave functionality.
+     */
     public void stopAutosave() {
         autosaveTimer.stop();
         autosaveWorker.shutdown();
     }
 
+    /**
+     * Creates a string binding for the autosave status alert.
+     *
+     * @return a string binding for the autosave status alert
+     */
     public StringBinding autosaveStatusAlert() {
         return Bindings.createStringBinding(() -> {
             if (autosaveTimer.getStatus() != Animation.Status.RUNNING) {
@@ -439,6 +457,12 @@ public class ImageFiles {
         }, autosaveTimer.statusProperty(),autosaveTimer.currentTimeProperty());
     }
 
+    /**
+     * Flattens the given image on a white background.
+     *
+     * @param image the image to flatten
+     * @return a new image flattened on a white background
+     */
     private BufferedImage flattenOnWhite(BufferedImage image) {
         BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
 
@@ -472,9 +496,17 @@ public class ImageFiles {
         return "png";
     }
 
+    /**
+     * Logs an autosave event.
+     *
+     * @param file The file that was autosaved.
+     * @param event The event that occurred.
+     */
     private void logAutosave(Path file, String event) {
         LocalDateTime now = LocalDateTime.now();
 
+        // Log the autosave event with a timestamp and thread information.
+        // Format: Date time ~ [File name]: event ~ Thread
         System.out.printf("%tF %<tT ~ [%s]: %s ~ %s%n", now, file.getFileName(), event, Thread.currentThread().getName());
     }
 

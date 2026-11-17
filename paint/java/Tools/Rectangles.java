@@ -17,7 +17,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Added a live preview of the rectangle while drawing.
+// - Added a handler for thread logging
 
 // ISSUES:
 // - There isn't a fill option yet, so setFill and setFillColor methods are currently unused.
@@ -53,6 +53,10 @@ public class Rectangles implements Shapes<Rectangles> {
         this.previewCanvas = previewCanvas;
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }
@@ -242,6 +246,7 @@ public class Rectangles implements Shapes<Rectangles> {
         gc.strokeRect(l, t, w, h);
         gc.restore();
     }
+    
     /**
      * Returns the current instance of the Rectangles drawing tool.
      *

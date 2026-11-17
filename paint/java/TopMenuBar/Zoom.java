@@ -25,7 +25,7 @@ import paint.Operations.FileTab;
  */
 
 // IMPROVEMENTS:
-// - Renamed on the app screen as "View" for clarity
+// - N/A
 
 // ISSUES:
 // - N/A

@@ -21,7 +21,8 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Added preview of the six-point star while dragging the mouse.
+// - New shape
+// - Added handler for thread logging
 
 // ISSUES:
 // - There is no menu option to fill the six-point star at the moment, though there are setters for fill color and fill status.
@@ -56,6 +57,10 @@ public class SixPointStars implements Shapes<SixPointStars> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger the logger to set
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }

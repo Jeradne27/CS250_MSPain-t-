@@ -26,16 +26,11 @@ import paint.Menus.StyleMenu;
  */
 
 // IMPROVEMENTS:
-// - The tab pane could have a visual indicator for the active tab, such as a highlighted border or background color.
-// - The workspace area could have a background color or border to visually separate it from the tab headers.
-// - The drawing area could have a border or background color to visually separate it from the workspace.
-// - The tab title could be made editable to allow renaming without changing the file name.
-// - The tabs sit below the tab headers, which could be confusing for users.
+// - Enhanced the UI so the buttons, labels, and menubars are more visually appealing
 
 // ISSUES:
 // - The only way to rename a tab is to change the file name completely
 // - The tab pane could have a visual indicator for the active tab, such as a highlighted border or background color.
-// - The workspace area could have a background color or border to visually separate it from the tab headers.
 
 public class FileTab {
    // each fileTab has its own image and canvas
@@ -61,6 +56,7 @@ public class FileTab {
    private ToolMenu toolMenu;
    private StyleMenu styleMenu;
 
+   // A unique identifier for recovery purposes.
    private UUID recoveryID = UUID.randomUUID();
 
    public UUID getRecoveryID() {
@@ -306,6 +302,11 @@ public class FileTab {
       logCanvasAction(action);  
    }
 
+   /**
+    * Logs an action performed on the canvas.
+    *
+    * @param event the event to log
+    */
    public void logCanvasAction(String event) {
         LocalDateTime now = LocalDateTime.now();
         String fileName = getFile() == null ? title : getFile().getName();

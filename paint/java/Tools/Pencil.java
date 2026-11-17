@@ -14,8 +14,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Added a preview of the pencil while drawing.
-// - Improved the smoothness of the pencil
+// - Added handler for thread logging
 
 // ISSUES:
 // - The pencil is still slightly choppy when drawing quickly, but it has improved from the first version
@@ -42,6 +41,10 @@ public class Pencil implements Drawing<Pencil> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }

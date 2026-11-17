@@ -17,8 +17,7 @@ import javafx.scene.shape.StrokeLineCap;
  */
 
 // IMPROVEMENTS:
-// - Newest shape to the tool menu
-// - Added view preview for the heart while drawing
+// - Added handler for thread logging
 
 // ISSUES:
 // - There isn't a menu item to fill in the heart shape yet, though the methods are ready for it.
@@ -57,6 +56,10 @@ public class Hearts implements Shapes<Hearts> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }

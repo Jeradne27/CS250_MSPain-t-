@@ -18,7 +18,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Added a live preview of the square while drawing.
+// - Added a handler for thread logging
 
 // ISSUES:
 // - There isn't a fill option yet, so setFill and setFillColor methods are currently unused.
@@ -54,6 +54,10 @@ public class Squares implements Shapes<Squares> {
         this.previewCanvas = previewCanvas;
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger the logger to set
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }

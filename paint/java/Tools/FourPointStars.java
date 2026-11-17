@@ -13,18 +13,19 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.paint.Color;
 
 /**
- * A tool for drawing diamond shapes on a canvas.
- * Provides methods to set the color, width, fill status, and dashed style of the diamond.
- * The diamond is drawn on the canvas when the mouse is released.
+ * A tool for drawing four-point star shapes on a canvas.
+ * Provides methods to set the color, width, fill status, and dashed style of the four-point star.
+ * The four-point star is drawn on the canvas when the mouse is released.
  * The tool can be activated and deactivated to enable or disable drawing.
  * The current instance of the tool can be retrieved using the getTool() method.
  */
 
 // IMPROVEMENTS:
-// - Added preview of the diamond while dragging the mouse.
+// - New shape
+// - Added handler for thread logging
 
 // ISSUES:
-// - There is no menu option to fill the diamond at the moment, though there are setters for fill color and fill status.
+// - There is no menu option to fill the four-point star at the moment, though there are setters for fill color and fill status.
 
 public class FourPointStars implements Shapes<FourPointStars> {
     private Canvas canvas;
@@ -57,6 +58,10 @@ public class FourPointStars implements Shapes<FourPointStars> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger The logger to set for the canvas.
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }

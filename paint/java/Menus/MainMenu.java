@@ -27,13 +27,11 @@ import paint.TopMenuBar.Zoom;
  */
 
 // IMPROVEMENTS:
-// - Added more keyboard shortcuts for frequently used actions (Open, New Tab, Save, Save As, Close, Reset Zoom, Help, About)
-// - Made some changes to the layout and organization of the menu items for better user experience.
-// - Renamed the "View" menu to "Zoom" for clarity.
+// - Added threading
+// - Autosave added
 
 // ISSUES: 
-// - The zoom menu currently only has a reset option and lacks keyboard shortcuts for zooming in and out.
-// - The zoom slider doesn't start at the middle position.
+// - No Icons for the File Menu Items
 
 public class MainMenu {
     
@@ -86,6 +84,7 @@ public class MainMenu {
 
         menuBar.getMenus().addAll(fileMenu, zoomMenu, helpMenu);
 
+        // Handle autosave functionality
         autosaveItem.setOnAction(event -> {
             if (!autosaveItem.isSelected()) {
                 files.setAutosaveActive(false);

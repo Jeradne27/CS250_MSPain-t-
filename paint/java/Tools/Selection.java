@@ -30,9 +30,7 @@ import paint.Operations.FileTab;
  */
 
 // IMPROVEMENTS:
-// - Added support for selecting and moving pixels on the canvas.
-// - Added support for copying and pasting selected pixels.
-// - Added support for cutting selected pixels.
+// - Added support for thread logging
 
 // ISSUES:
 // - There is no confirmation that a section was successfully copied and is ready for pasting, so I want to add a visual indicator or message to inform the user.
@@ -71,6 +69,10 @@ public class Selection implements Drawing<Selection> {
         this.previewCanvas = file.getPreviewCanvas();
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }

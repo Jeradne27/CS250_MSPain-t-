@@ -35,6 +35,11 @@ public class Eraser implements Drawing<Eraser> {
         this.canvas = canvas;
     }
 
+    /**
+     * sets the logger for the canvas
+     * 
+     * @param canvasLogger
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }

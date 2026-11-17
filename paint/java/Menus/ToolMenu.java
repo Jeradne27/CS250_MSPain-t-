@@ -52,18 +52,15 @@ import paint.Tools.Selection;
  */
 
 // IMPROVEMENTS:
-// - Added Hearts, Pentagons, Text, and Right Triangles tools.
-// - Added copy, paste, and cut under a new edit menu.
-// - Moved eraser, undo, redo, and clear to into the menubar in order to keep things separated
+// - Added elements for star shapes
+// - Added icons and hover labels for tools and edit items
 
 // ISSUES:
-// - No keyboard shortcuts for tool selection.
-// - Move the eraser, undo, redo, and clear options somewhere else
+// - Some of the icons aren't consistent
 
 public class ToolMenu {
     private final Canvas canvas;
 
-    // Calls to outside classes
     private Drawing<?> activeTool;
     private MenuBar toolBar;
 
@@ -407,6 +404,11 @@ public class ToolMenu {
         activeTool.activateTool(canvas);
     }
 
+    /**
+     * Loads an icon from the specified path.
+     * @param path The path to the icon file.
+     * @return The loaded ImageView representing the icon.
+     */
     private ImageView loadIcon(String path) {
         ImageView icon = new ImageView(new Image(getClass().getResourceAsStream(path)));
 

@@ -17,8 +17,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Newest shape in the shape menu
-// - Supports different orientations of the right triangle
+// - Added handler for thread logging
 
 // ISSUES:
 // - Since there is no fill menu yet, the fill color cannot be changed yet.
@@ -55,6 +54,10 @@ public class RightTriangles implements Shapes<RightTriangles> {
         this.gc = canvas.getGraphicsContext2D();
     }
     
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }

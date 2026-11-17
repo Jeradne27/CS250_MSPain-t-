@@ -17,7 +17,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Added a preview of the ellipse while drawing.
+// - Added handlers for thread logging
 
 
 // ISSUES:
@@ -54,6 +54,11 @@ public class Ellipses implements Shapes<Ellipses> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the logger for the canvas.
+     *
+     * @param canvasLogger the logger to set for the canvas.
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }
@@ -245,6 +250,11 @@ public class Ellipses implements Shapes<Ellipses> {
     }
 
     // Returns the current instance of the Ellipses drawing tool.
+    /**
+     * Returns the current instance of the Ellipses drawing tool.
+     *
+     * @return the current instance of the Ellipses drawing tool.
+     */
     public Ellipses getTool() {
         return this;
     }

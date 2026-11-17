@@ -16,7 +16,7 @@ import javafx.scene.paint.Color;
  * Class representing the Lines drawing tool.
  */
 // IMPROVEMENTS:
-// - Addedd a preview of the line while drawing.
+// - Added handler for thread logging
 
 // ISSUES:
 // - Would like to add support for curved lines
@@ -49,6 +49,10 @@ public class Lines implements Drawing<Lines> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }

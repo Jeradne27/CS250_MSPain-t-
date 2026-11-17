@@ -21,7 +21,7 @@ import javafx.scene.paint.Color;
  */
 
 // IMPROVEMENTS:
-// - Added preview of the diamond while dragging the mouse.
+// - Added handler for thread logging
 
 // ISSUES:
 // - There is no menu option to fill the diamond at the moment, though there are setters for fill color and fill status.
@@ -64,6 +64,10 @@ public class Diamonds implements Shapes<Diamonds> {
         this.gc = canvas.getGraphicsContext2D();
     }
 
+    /**
+     * Sets the logger for the canvas.
+     * @param canvasLogger The logger to set for the canvas.
+     */
     public void setCanvasLogger(Consumer<String> canvasLogger) {
         this.canvasLogger = canvasLogger;
     }
